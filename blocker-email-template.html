@@ -1,0 +1,127 @@
+<!--
+  XTREMESILICA &middot; DAILY CRITICAL-BLOCKERS EMAIL
+  Paste this whole file into the "Body (HTML)" field of your Genspark Workflow
+  Send Email step. All styles are INLINED for Gmail/Outlook compatibility &mdash;
+  do NOT split into external stylesheets.
+
+  Placeholders (replace at Workflow build time OR use dynamic step outputs):
+    {{DATE}}          e.g. "Sunday, 06 September 2026"
+    {{DASHBOARD_URL}} e.g. "https://xtremesilica.com/dashboard"  (or the sandbox URL for now)
+    {{OPEN_COUNT}}    e.g. "3"      (count of blockers still open)
+-->
+<div style="background:#F5F7FA; padding:24px 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; color:#0E1726;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:720px; margin:0 auto; background:#FFFFFF; border:1px solid #DDE3EC; border-radius:8px; overflow:hidden;">
+    <!-- Red hero bar (matches dashboard theme) -->
+    <tr>
+      <td style="background:#DC2626; color:#FFFFFF; padding:16px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td style="font-size:20px; font-weight:700; letter-spacing:-.01em;">
+              <span style="display:inline-block; width:28px; height:28px; background:#FFFFFF; color:#DC2626; text-align:center; line-height:28px; border-radius:50%; font-weight:800; margin-right:10px; vertical-align:middle;">!</span>
+              Critical Blockers &mdash; Action Required
+            </td>
+            <td style="text-align:right; font-family:'IBM Plex Mono',Consolas,monospace; font-size:12px; opacity:.95;">
+              {{OPEN_COUNT}} OPEN &middot; {{DATE}}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Intro strip -->
+    <tr>
+      <td style="background:#FEF2F2; border-bottom:1px solid #FCA5A5; padding:12px 24px; color:#7F1D1D; font-size:13px; line-height:1.5;">
+        The following blockers on the <strong>Xtremesilica portfolio dashboard</strong> remain unresolved. Owners are asked to update status by end of day. Full dashboard: <a href="{{DASHBOARD_URL}}" style="color:#B91C1C; font-weight:600;">open dashboard</a>.
+      </td>
+    </tr>
+
+    <!-- Blockers table -->
+    <tr>
+      <td style="padding:20px 24px 8px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #0E1726; color:#0E1726; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; letter-spacing:.08em;">#</th>
+              <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #0E1726; color:#0E1726; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; letter-spacing:.08em;">BLOCKER</th>
+              <th style="text-align:center; padding:8px 6px; border-bottom:2px solid #0E1726; color:#0E1726; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; letter-spacing:.08em;">SEV</th>
+              <th style="text-align:center; padding:8px 6px; border-bottom:2px solid #0E1726; color:#0E1726; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; letter-spacing:.08em;">OWNER</th>
+              <th style="text-align:center; padding:8px 6px; border-bottom:2px solid #0E1726; color:#0E1726; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; letter-spacing:.08em;">TARGET</th>
+              <th style="text-align:center; padding:8px 6px; border-bottom:2px solid #0E1726; color:#0E1726; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; letter-spacing:.08em;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- B1 -->
+            <tr>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; vertical-align:top; font-family:'IBM Plex Mono',Consolas,monospace; font-weight:700; color:#B91C1C;">B1</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; vertical-align:top;">
+                <div style="font-weight:600; color:#0E1726; margin-bottom:4px;">Claude &amp; AWS Server allotment for last 4 of 23 IPs</div>
+                <div style="font-size:12px; color:#44506A; line-height:1.5;"><strong>19/23 done.</strong> Only 4 IPs remain: <strong>H.265 Codec, AMBA AXI, PCIe Gen6 Switch, CXL</strong> &mdash; close by 10-Sep to fully clear B1.</div>
+              </td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11px; font-weight:700; color:#C2410C; letter-spacing:.06em;">MEDIUM</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11.5px; color:#374151;">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span></td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11.5px; font-weight:600; color:#374151;">10-Sep-26</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center;">
+                <span style="display:inline-block; padding:3px 8px; border-radius:10px; background:#FEF3C7; color:#B45309; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10px; font-weight:700; letter-spacing:.05em;">AMBER &middot; NEAR CLOSURE</span>
+              </td>
+            </tr>
+
+            <!-- B2 -->
+            <tr>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; vertical-align:top; font-family:'IBM Plex Mono',Consolas,monospace; font-weight:700; color:#B91C1C;">B2</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; vertical-align:top;">
+                <div style="font-weight:600; color:#0E1726; margin-bottom:4px;">SCL partnership for Space-IP rad-hard prototypes</div>
+                <div style="font-size:12px; color:#44506A; line-height:1.5;">Sign up with <strong>SCL (Semi-Conductor Laboratory)</strong> for future Space IPs &mdash; rad-hardened prototypes on 180nm process; unlocks ISRO / DRDO / BEL pipeline.</div>
+              </td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11px; font-weight:700; color:#C2410C; letter-spacing:.06em;">HIGH</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11.5px; color:#374151;">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span><br>Girish B V<br><span style="font-size:10px; color:#8A94A8">girish@sionsemi.com</span></td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11.5px; font-weight:600; color:#374151;">30-Sep-26</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center;">
+                <span style="display:inline-block; padding:3px 8px; border-radius:10px; background:#FEE2E2; color:#B91C1C; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10px; font-weight:700; letter-spacing:.05em;">RED &middot; OPEN</span>
+              </td>
+            </tr>
+
+            <!-- B3 -->
+            <tr>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; vertical-align:top; font-family:'IBM Plex Mono',Consolas,monospace; font-weight:700; color:#B91C1C;">B3</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; vertical-align:top;">
+                <div style="font-weight:600; color:#0E1726; margin-bottom:4px;">DLI funding for PCIe Gen6 Switch tapeout</div>
+                <div style="font-size:12px; color:#44506A; line-height:1.5;">Discuss with <strong>C-DAC / IESA</strong> for <strong>DLI (Design Linked Incentive)</strong> funding &mdash; target: PCIe Gen6 Switch fabric tapeout ($400K ASP &middot; $4.91M FY30 revenue).</div>
+              </td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11px; font-weight:700; color:#C2410C; letter-spacing:.06em;">HIGH</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11.5px; color:#374151;">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span><br>Girish B V<br><span style="font-size:10px; color:#8A94A8">girish@sionsemi.com</span></td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center; font-family:'IBM Plex Mono',Consolas,monospace; font-size:11.5px; font-weight:600; color:#374151;">15-Oct-26</td>
+              <td style="padding:12px 6px; border-bottom:1px solid #F0F2F5; text-align:center;">
+                <span style="display:inline-block; padding:3px 8px; border-radius:10px; background:#FEE2E2; color:#B91C1C; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10px; font-weight:700; letter-spacing:.05em;">RED &middot; OPEN</span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Objective strip -->
+    <tr>
+      <td style="padding:14px 24px 20px;">
+        <div style="background:#FEE2E2; border-left:3px solid #DC2626; padding:12px 14px; font-size:12.5px; color:#7F1D1D; line-height:1.55; border-radius:0 4px 4px 0;">
+          <strong>Immediate objective:</strong> B1 near closure &mdash; 4 IPs remaining for Claude + AWS allotment. B2 (SCL) opens a new revenue vertical; B3 (DLI) offloads tapeout capex. Every day B2 &amp; B3 stay open delays the Space and PCIe Gen6 Switch revenue streams into FY29.
+        </div>
+      </td>
+    </tr>
+
+    <!-- CTA -->
+    <tr>
+      <td style="padding:0 24px 24px; text-align:center;">
+        <a href="{{DASHBOARD_URL}}" style="display:inline-block; background:#0E1726; color:#FFFFFF; padding:11px 22px; border-radius:4px; text-decoration:none; font-weight:600; font-size:13px; letter-spacing:.01em;">Open live dashboard &rarr;</a>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="background:#F5F7FA; border-top:1px solid #DDE3EC; padding:14px 24px; font-family:'IBM Plex Mono',Consolas,monospace; font-size:10.5px; color:#8A94A8; line-height:1.6;">
+        Xtremesilica &middot; portfolio blocker digest &middot; sent daily by Genspark Workflow until all blockers are cleared &middot; sources: xtremesilica.com &amp; Xtremesilica-Employees (6).xlsx
+      </td>
+    </tr>
+  </table>
+</div>

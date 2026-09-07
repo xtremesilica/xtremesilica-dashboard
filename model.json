@@ -1,0 +1,356 @@
+{
+  "ips": {
+    "PCIe Gen 4/5/6": {
+      "tier": "flagship",
+      "license": 350000,
+      "royalty_asp_pct": 0.008
+    },
+    "100G Ethernet": {
+      "tier": "flagship",
+      "license": 275000,
+      "royalty_asp_pct": 0.006
+    },
+    "DDR5 Controller": {
+      "tier": "flagship",
+      "license": 275000,
+      "royalty_asp_pct": 0.005
+    },
+    "H.265 Codec": {
+      "tier": "mid",
+      "license": 200000,
+      "royalty_asp_pct": 0.01
+    },
+    "USB 4.0": {
+      "tier": "mid",
+      "license": 180000,
+      "royalty_asp_pct": 0.007
+    },
+    "AMBA AXI": {
+      "tier": "entry",
+      "license": 75000,
+      "royalty_asp_pct": 0.0
+    }
+  },
+  "new_lics": {
+    "PCIe Gen 4/5/6": [
+      1,
+      3,
+      6,
+      8
+    ],
+    "100G Ethernet": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "DDR5 Controller": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "H.265 Codec": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "USB 4.0": [
+      0,
+      2,
+      3,
+      5
+    ],
+    "AMBA AXI": [
+      2,
+      4,
+      6,
+      8
+    ]
+  },
+  "roy_units_m": {
+    "PCIe Gen 4/5/6": [
+      0,
+      0,
+      0.5,
+      2.0
+    ],
+    "100G Ethernet": [
+      0,
+      0,
+      0.1,
+      0.5
+    ],
+    "DDR5 Controller": [
+      0,
+      0,
+      0.8,
+      3.0
+    ],
+    "H.265 Codec": [
+      0,
+      0,
+      1.5,
+      5.0
+    ],
+    "USB 4.0": [
+      0,
+      0,
+      2.0,
+      8.0
+    ],
+    "AMBA AXI": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "asp": {
+    "PCIe Gen 4/5/6": 120,
+    "100G Ethernet": 250,
+    "DDR5 Controller": 80,
+    "H.265 Codec": 15,
+    "USB 4.0": 8,
+    "AMBA AXI": 0
+  },
+  "totals": {
+    "FY27": {
+      "license": 975000,
+      "support": 175500.0,
+      "royalty": 0.0,
+      "total": 1150500.0
+    },
+    "FY28": {
+      "license": 3485000,
+      "support": 802800.0,
+      "royalty": 0.0,
+      "total": 4287800.0
+    },
+    "FY29": {
+      "license": 6365000,
+      "support": 1948500.0,
+      "royalty": 1287000.0,
+      "total": 9600500.0
+    },
+    "FY30": {
+      "license": 8875000,
+      "support": 3546000.0,
+      "royalty": 5068000.0,
+      "total": 17489000.0
+    }
+  },
+  "per_ip": {
+    "PCIe Gen 4/5/6": {
+      "FY27": {
+        "license": 350000,
+        "support": 63000.0,
+        "royalty": 0.0,
+        "total": 413000.0,
+        "new_lics": 1,
+        "cum_lics": 1
+      },
+      "FY28": {
+        "license": 1050000,
+        "support": 252000.0,
+        "royalty": 0.0,
+        "total": 1302000.0,
+        "new_lics": 3,
+        "cum_lics": 4
+      },
+      "FY29": {
+        "license": 2100000,
+        "support": 630000.0,
+        "royalty": 480000.0,
+        "total": 3210000.0,
+        "new_lics": 6,
+        "cum_lics": 10
+      },
+      "FY30": {
+        "license": 2800000,
+        "support": 1134000.0,
+        "royalty": 1920000.0,
+        "total": 5854000.0,
+        "new_lics": 8,
+        "cum_lics": 18
+      }
+    },
+    "100G Ethernet": {
+      "FY27": {
+        "license": 0,
+        "support": 0.0,
+        "royalty": 0.0,
+        "total": 0.0,
+        "new_lics": 0,
+        "cum_lics": 0
+      },
+      "FY28": {
+        "license": 550000,
+        "support": 99000.0,
+        "royalty": 0.0,
+        "total": 649000.0,
+        "new_lics": 2,
+        "cum_lics": 2
+      },
+      "FY29": {
+        "license": 1100000,
+        "support": 297000.0,
+        "royalty": 150000.0,
+        "total": 1547000.0,
+        "new_lics": 4,
+        "cum_lics": 6
+      },
+      "FY30": {
+        "license": 1650000,
+        "support": 594000.0,
+        "royalty": 750000.0,
+        "total": 2994000.0,
+        "new_lics": 6,
+        "cum_lics": 12
+      }
+    },
+    "DDR5 Controller": {
+      "FY27": {
+        "license": 275000,
+        "support": 49500.0,
+        "royalty": 0.0,
+        "total": 324500.0,
+        "new_lics": 1,
+        "cum_lics": 1
+      },
+      "FY28": {
+        "license": 825000,
+        "support": 198000.0,
+        "royalty": 0.0,
+        "total": 1023000.0,
+        "new_lics": 3,
+        "cum_lics": 4
+      },
+      "FY29": {
+        "license": 1375000,
+        "support": 445500.0,
+        "royalty": 320000.0,
+        "total": 2140500.0,
+        "new_lics": 5,
+        "cum_lics": 9
+      },
+      "FY30": {
+        "license": 1925000,
+        "support": 792000.0,
+        "royalty": 1200000.0,
+        "total": 3917000.0,
+        "new_lics": 7,
+        "cum_lics": 16
+      }
+    },
+    "H.265 Codec": {
+      "FY27": {
+        "license": 200000,
+        "support": 36000.0,
+        "royalty": 0.0,
+        "total": 236000.0,
+        "new_lics": 1,
+        "cum_lics": 1
+      },
+      "FY28": {
+        "license": 400000,
+        "support": 108000.0,
+        "royalty": 0.0,
+        "total": 508000.0,
+        "new_lics": 2,
+        "cum_lics": 3
+      },
+      "FY29": {
+        "license": 800000,
+        "support": 252000.0,
+        "royalty": 225000.0,
+        "total": 1277000.0,
+        "new_lics": 4,
+        "cum_lics": 7
+      },
+      "FY30": {
+        "license": 1000000,
+        "support": 432000.0,
+        "royalty": 750000.0,
+        "total": 2182000.0,
+        "new_lics": 5,
+        "cum_lics": 12
+      }
+    },
+    "USB 4.0": {
+      "FY27": {
+        "license": 0,
+        "support": 0.0,
+        "royalty": 0.0,
+        "total": 0.0,
+        "new_lics": 0,
+        "cum_lics": 0
+      },
+      "FY28": {
+        "license": 360000,
+        "support": 64800.0,
+        "royalty": 0.0,
+        "total": 424800.0,
+        "new_lics": 2,
+        "cum_lics": 2
+      },
+      "FY29": {
+        "license": 540000,
+        "support": 162000.0,
+        "royalty": 112000.0,
+        "total": 814000.0,
+        "new_lics": 3,
+        "cum_lics": 5
+      },
+      "FY30": {
+        "license": 900000,
+        "support": 324000.0,
+        "royalty": 448000.0,
+        "total": 1672000.0,
+        "new_lics": 5,
+        "cum_lics": 10
+      }
+    },
+    "AMBA AXI": {
+      "FY27": {
+        "license": 150000,
+        "support": 27000.0,
+        "royalty": 0.0,
+        "total": 177000.0,
+        "new_lics": 2,
+        "cum_lics": 2
+      },
+      "FY28": {
+        "license": 300000,
+        "support": 81000.0,
+        "royalty": 0.0,
+        "total": 381000.0,
+        "new_lics": 4,
+        "cum_lics": 6
+      },
+      "FY29": {
+        "license": 450000,
+        "support": 162000.0,
+        "royalty": 0.0,
+        "total": 612000.0,
+        "new_lics": 6,
+        "cum_lics": 12
+      },
+      "FY30": {
+        "license": 600000,
+        "support": 270000.0,
+        "royalty": 0.0,
+        "total": 870000.0,
+        "new_lics": 8,
+        "cum_lics": 20
+      }
+    }
+  },
+  "years": [
+    "FY27",
+    "FY28",
+    "FY29",
+    "FY30"
+  ]
+}

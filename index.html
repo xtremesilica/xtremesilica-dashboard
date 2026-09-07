@@ -1,0 +1,1693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Xtremesilica — Executive Dashboard · FY27 → FY30</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --ink:#0E1726; --ink2:#44506A; --ink3:#8A94A8;
+  --paper:#FAFBFD; --line:#DDE3EC; --line2:#C9D2E0; --grid:#EEF2F8;
+  --blue:#1E4FD8; --blue-soft:#E8EFFC;
+  --green:#0E7A4F; --green-soft:#E3F3EB;
+  --copper:#C2410C; --copper-soft:#FBEAE0;
+  --amber:#B45309; --amber-soft:#FDF2DF;
+  --red:#B91C1C; --red-soft:#F6D5CE;
+  --violet:#5B2FB9; --violet-soft:#EBE3F8;
+  --teal:#0F766E; --teal-soft:#D5F0EC;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0; max-width:100%; overflow-x:hidden}
+body{
+  font-family:'Inter',sans-serif; color:var(--ink); background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px; font-size:14px; line-height:1.5;
+}
+img,canvas,svg,video{max-width:100%; height:auto}
+canvas{width:100% !important; max-width:100%}
+a{color:var(--blue); text-decoration:none} a:hover{text-decoration:underline}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif; margin:0; color:var(--ink); font-weight:600; letter-spacing:-.01em}
+h1{font-size:34px; line-height:1.1}
+h2{font-size:22px}
+h3{font-size:16px}
+code,.mono{font-family:'IBM Plex Mono',monospace}
+
+/* topbar */
+.topbar{position:sticky; top:0; z-index:10; background:rgba(250,251,253,.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1320px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:10px}
+.logo{width:34px; height:34px; border-radius:8px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; letter-spacing:-.03em}
+.brand-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px}
+.brand-sub{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink3); text-transform:uppercase; letter-spacing:.1em}
+.pagenav{display:flex; gap:8px}
+.pagenav a{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+  padding:8px 14px; border-radius:6px; border:1px solid var(--line); color:var(--ink2); background:#fff;
+}
+.pagenav a:hover{background:var(--grid); color:var(--ink); text-decoration:none}
+.pagenav a.active{background:var(--ink); color:#fff; border-color:var(--ink)}
+
+.wrap{max-width:1320px; margin:0 auto; padding:28px 24px 80px; overflow-x:hidden}
+
+/* BLOCKERS — table-style, matches attached theme */
+.blockers-hero{
+  border-radius:10px; margin-bottom:24px; overflow:hidden;
+  border:1px solid #FCA5A5; background:#FEF2F2;
+  box-shadow:0 2px 8px rgba(185,28,28,0.08);
+}
+.blockers-topbar{
+  background:#DC2626; color:#fff; padding:12px 18px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+}
+.blockers-topbar .lhs{display:flex; align-items:center; gap:10px}
+.blockers-topbar .warn{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; border-radius:50%;
+  background:rgba(255,255,255,0.2); color:#fff; font-family:'Space Grotesk',sans-serif;
+  font-weight:700; font-size:14px; flex-shrink:0;
+}
+.blockers-topbar .title{
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px;
+  letter-spacing:.06em; text-transform:uppercase; color:#fff;
+}
+.blockers-topbar .sub{
+  font-family:'Inter',sans-serif; font-size:12.5px; color:rgba(255,255,255,0.9);
+  font-weight:400; letter-spacing:0;
+}
+.blockers-topbar .count-pill{
+  background:#1F2937; color:#fff; padding:5px 12px; border-radius:6px;
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+  letter-spacing:.08em; text-transform:uppercase;
+}
+.blockers-table-wrap{background:#FEF2F2}
+.blockers-table{
+  width:100%; border-collapse:collapse; font-size:12.5px;
+}
+.blockers-table thead th{
+  background:transparent; color:#7F1D1D; font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
+  padding:10px 14px; text-align:left; border-bottom:1px solid #FCA5A5;
+  vertical-align:bottom;
+}
+.blockers-table thead th.center{text-align:center}
+.blockers-table thead th.right{text-align:right}
+.blockers-table tbody td{
+  padding:12px 14px; border-bottom:1px solid #FEE2E2; color:#374151; vertical-align:middle;
+  font-family:'Inter',sans-serif;
+}
+.blockers-table tbody tr:last-child td{border-bottom:none}
+.blockers-table tbody tr:hover td{background:#FEE2E2}
+.blockers-table .col-id{
+  font-family:'Space Grotesk',sans-serif; font-weight:700; color:#7F1D1D; width:52px;
+  letter-spacing:-.01em;
+}
+.blockers-table .col-blocker{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; color:#1F2937; font-weight:600;
+  text-align:right; padding-right:16px;
+}
+.blockers-table .col-sev{width:90px; text-align:center; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:11px; letter-spacing:.06em; color:#B91C1C}
+.blockers-table .col-sev.high{color:#C2410C}
+.blockers-table .col-owner{width:120px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#374151}
+.blockers-table .col-target{width:110px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#374151; font-weight:600}
+.blockers-table .col-status{width:110px; text-align:center}
+.blockers-table .status-pill{
+  display:inline-block; background:#DC2626; color:#fff;
+  padding:5px 10px; border-radius:4px; font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px; font-weight:700; letter-spacing:.06em;
+}
+.blockers-table .col-action{
+  text-align:right; font-family:'Inter',sans-serif; font-size:12.5px; color:#374151;
+  padding-right:18px; line-height:1.45;
+}
+.blockers-footer{
+  padding:12px 18px 14px; border-top:1px solid #FCA5A5; background:#FEF2F2;
+  font-size:12px; color:#374151; line-height:1.5;
+}
+.blockers-footer strong{color:#7F1D1D; font-weight:700}
+.blockers-footer em{font-style:italic; color:#1F2937}
+.blockers-objective{
+  padding:12px 18px; background:#FEE2E2; border-top:1px solid #FCA5A5;
+  font-size:12.5px; color:#7F1D1D; font-style:italic; line-height:1.5;
+}
+.blockers-objective strong{color:#7F1D1D; font-weight:700; font-style:normal}
+@media (max-width:900px){
+  .blockers-table thead{display:none}
+  .blockers-table tbody tr{display:block; padding:12px 14px; border-bottom:1px solid #FCA5A5}
+  .blockers-table tbody td{display:flex; justify-content:space-between; padding:4px 0; border:none; width:auto !important; text-align:left !important}
+  .blockers-table tbody td::before{content:attr(data-lbl); font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; color:#7F1D1D; letter-spacing:.08em; margin-right:12px}
+}
+
+
+/* MAIN PROJECTION CARD — replaces old KPI grid */
+.main-proj{
+  background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px 28px 24px;
+  margin-bottom:24px; box-shadow:0 4px 20px rgba(14,23,38,0.04);
+}
+.main-proj-hd{
+  display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:14px;
+  margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--line);
+  max-width:100%;
+}
+.main-proj-hd .legend{flex-wrap:wrap}
+.main-proj-hd .title{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:20px; letter-spacing:-.01em}
+.main-proj-hd .title-sub{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink3); text-transform:uppercase; letter-spacing:.1em; margin-top:4px}
+.main-proj-hd .legend{display:flex; gap:14px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink2)}
+.main-proj-hd .legend .lk{display:inline-flex; align-items:center; gap:6px}
+.main-proj-hd .legend .lk::before{content:""; width:11px; height:11px; border-radius:3px; background:var(--blue)}
+.main-proj-hd .legend .lk.mnt::before{background:var(--green)}
+.main-proj-hd .legend .lk.roy::before{background:var(--copper)}
+.main-proj-hd .legend .lk.nre::before{background:var(--violet)}
+.main-proj-hd .legend .lk.cum::before{background:var(--ink); width:14px; height:2px; border-radius:0}
+.main-proj-hd .legend .lk.tgt::before{background:transparent; border-top:2px dashed var(--green); width:14px; height:0; border-radius:0}
+.main-proj-hd .legend .lk.opex::before{background:var(--amber)}
+.main-proj-hd .legend .lk.cash::before{background:var(--green)}
+.main-proj-hd .legend .lk.fund::before{background:var(--copper); border-radius:50%; width:10px; height:10px}
+.main-proj-fy{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:18px;
+}
+@media (max-width:900px){.main-proj-fy{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.main-proj-fy .fy{
+  padding:14px 16px; border-radius:12px; background:var(--grid);
+  position:relative; overflow:hidden; border:1px solid transparent;
+  transition:transform .15s ease;
+}
+.main-proj-fy .fy:hover{transform:translateY(-2px)}
+.main-proj-fy .fy.f1{background:var(--blue-soft); border-color:rgba(30,79,216,0.15)}
+.main-proj-fy .fy.f2{background:var(--green-soft); border-color:rgba(14,122,79,0.15)}
+.main-proj-fy .fy.f3{background:var(--copper-soft); border-color:rgba(194,65,12,0.15)}
+.main-proj-fy .fy.f4{background:var(--amber-soft); border-color:rgba(180,83,9,0.2)}
+.main-proj-fy .fy .yr{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3); margin-bottom:4px}
+.main-proj-fy .fy .amt{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; letter-spacing:-.02em; color:var(--ink); line-height:1.1}
+.main-proj-fy .fy .growth{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; color:var(--green); background:rgba(14,122,79,0.1); padding:2px 6px; border-radius:4px; margin-top:6px}
+.main-proj-fy .fy.f1 .growth{color:var(--blue); background:rgba(30,79,216,0.1)}
+.main-proj-fy .fy.f4 .growth{color:var(--amber); background:rgba(180,83,9,0.12)}
+.main-proj-fy .fy .note{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink2); margin-top:6px; letter-spacing:.03em}
+.main-proj-chart{position:relative; height:360px; margin-top:8px}
+.main-proj-foot{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  margin-top:12px; padding-top:14px; border-top:1px dashed var(--line); font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink2);
+}
+.main-proj-foot .target{
+  color:var(--green); font-weight:600; padding:3px 10px; background:var(--green-soft); border-radius:6px;
+}
+.main-proj-foot .cum{color:var(--ink); font-weight:600}
+
+/* KPIs */
+.kpis{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin:0 0 24px}
+.kpi{background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px; position:relative; overflow:hidden}
+.kpi::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--blue)}
+.kpi.k-green::before{background:var(--green)}
+.kpi.k-copper::before{background:var(--copper)}
+.kpi.k-amber::before{background:var(--amber)}
+.kpi .lbl{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3)}
+.kpi .val{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:34px; letter-spacing:-.02em; margin:6px 0 4px; color:var(--ink)}
+.kpi .sub{font-size:12px; color:var(--ink2); line-height:1.4}
+.kpi .growth{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; padding:2px 7px; border-radius:4px; background:var(--green-soft); color:var(--green); font-weight:600; margin-top:6px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+
+/* section */
+.section-label{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink3); letter-spacing:.16em; text-transform:uppercase; border-top:1px solid var(--line); padding-top:26px; margin-bottom:6px}
+.section-title{margin-bottom:6px}
+.section-sub{color:var(--ink2); font-size:13px; margin-bottom:18px; max-width:1000px}
+
+/* cards */
+.card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:22px}
+.card h3{margin-bottom:6px}
+.card .sub{color:var(--ink2); font-size:12.5px; margin-bottom:16px}
+.grid-2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px}
+.grid-3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px}
+@media (max-width:960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.chart-box{position:relative; height:340px; max-width:100%}
+.chart-box.tall{height:400px; max-width:100%}
+.card{min-width:0}
+
+table{width:100%; border-collapse:collapse; font-size:13px}
+.card table{max-width:100%}
+th,td{padding:9px 10px; text-align:right; border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink3); border-bottom:1px solid var(--line2); font-weight:500}
+tbody tr:hover{background:var(--grid)}
+tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--line2)}
+.mono-cell{font-family:'IBM Plex Mono',monospace}
+
+.pill{display:inline-block; padding:2px 8px; border-radius:999px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500}
+.pill-blue{background:var(--blue-soft); color:var(--blue)}
+.pill-green{background:var(--green-soft); color:var(--green)}
+.pill-copper{background:var(--copper-soft); color:var(--copper)}
+.pill-amber{background:var(--amber-soft); color:var(--amber)}
+.pill-violet{background:var(--violet-soft); color:var(--violet)}
+.pill-teal{background:var(--teal-soft); color:var(--teal)}
+.pill-red{background:var(--red-soft); color:var(--red)}
+.pill-ink{background:#EEF2F8; color:var(--ink2)}
+
+.callout{border:1px solid var(--line); border-left:3px solid var(--blue); background:#fff; border-radius:8px; padding:14px 16px; font-size:13px; color:var(--ink2)}
+.callout.green{border-left-color:var(--green)}
+.callout.amber{border-left-color:var(--amber)}
+.callout.red{border-left-color:var(--red)}
+.callout strong{color:var(--ink)}
+
+/* IP portfolio grid — compact icon-first */
+.ip-compact{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px}
+@media (max-width:1200px){.ip-compact{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.ip-compact{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ip-chip{
+  background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 12px;
+  position:relative; transition:transform .15s ease, box-shadow .15s ease; cursor:default;
+  border-top:3px solid var(--blue); min-width:0;
+}
+.ip-chip:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(14,23,38,0.08)}
+.ip-chip .icn{
+  width:32px; height:32px; border-radius:7px; display:flex; align-items:center; justify-content:center;
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px; color:#fff; margin-bottom:8px;
+  letter-spacing:-.02em; background:var(--blue);
+}
+.ip-chip .nm{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px; color:var(--ink); line-height:1.2; min-height:32px; white-space:normal; overflow:hidden}
+.ip-chip .rev{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; color:var(--ink); margin-top:6px; letter-spacing:-.02em}
+.ip-chip .meta{font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--ink3); margin-top:2px; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.ip-chip .prog{height:4px; background:var(--grid); border-radius:2px; overflow:hidden; margin-top:8px}
+.ip-chip .prog .fill{height:100%; background:var(--blue); border-radius:2px}
+
+/* progress dashboard grid */
+.prog-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+@media (max-width:900px){.prog-grid{grid-template-columns:1fr}}
+.prog-row{min-width:0}
+.prog-row{background:#fff; border:1px solid var(--line); border-radius:8px; padding:12px 14px; display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center}
+.prog-row .head{display:flex; flex-direction:column; gap:2px}
+.prog-row .nm{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px}
+.prog-row .meta{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink3); letter-spacing:.04em}
+.prog-row .team{display:flex; gap:6px; align-items:center}
+.prog-row .team .av{width:22px; height:22px; border-radius:50%; background:var(--blue-soft); color:var(--blue); font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:600; display:flex; align-items:center; justify-content:center}
+.prog-row .team .av.open{background:var(--red-soft); color:var(--red)}
+.prog-row .bar-wrap{grid-column:1 / -1; display:flex; align-items:center; gap:10px; margin-top:4px}
+.prog-row .bar{flex:1; height:8px; background:var(--grid); border-radius:4px; overflow:hidden}
+.prog-row .bar .fill{height:100%; border-radius:4px; background:var(--blue)}
+.prog-row .bar .fill.b-green{background:var(--green)}
+.prog-row .bar .fill.b-amber{background:var(--amber)}
+.prog-row .pct{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; min-width:36px; text-align:right}
+
+/* GANTT — fully fluid, no horizontal scroll */
+.gantt-wrap{background:#fff; border:1px solid var(--line); border-radius:12px; padding:0}
+.gantt{display:grid; grid-template-columns:180px 1fr; gap:0}
+.gantt-cell{padding:6px 8px; border-bottom:1px solid var(--line); font-size:12px; background:#fff}
+.gantt-cell.hd{background:var(--grid); font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink3); text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid var(--line2); font-weight:500}
+.gantt-cell.name{border-right:1px solid var(--line); font-weight:500; padding:8px 10px}
+.gantt-cell.name .sub{display:block; font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--ink3); margin-top:2px; letter-spacing:.02em}
+.gantt-cell.track{position:relative; padding:5px 0; min-height:36px}
+.gantt-scale{position:relative; height:24px; background:var(--grid); border-bottom:1px solid var(--line2)}
+.gantt-tick{position:absolute; top:0; bottom:0; width:1px; background:var(--line2)}
+.gantt-tick .lbl{position:absolute; top:5px; left:4px; font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--ink2); white-space:nowrap; letter-spacing:.03em}
+@media (max-width:700px){.gantt{grid-template-columns:130px 1fr} .gantt-cell.name{font-size:11px; padding:6px 8px}}
+.gantt-qgrid{position:absolute; top:0; bottom:0; width:1px; background:var(--grid)}
+.gantt-bar{position:absolute; height:18px; top:9px; border-radius:3px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.gantt-bar.dev{background:var(--blue)}
+.gantt-bar.fpga{background:var(--amber)}
+.gantt-bar.gtm{background:var(--green)}
+.gantt-bar.rev{background:var(--copper)}
+.gantt-milestone{position:absolute; top:12px; width:10px; height:10px; transform:rotate(45deg); background:var(--red); border-radius:2px; box-shadow:0 0 0 2px #fff}
+.gantt-legend{display:flex; gap:14px; flex-wrap:wrap; padding:12px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink2); border-top:1px solid var(--line)}
+.gantt-legend .lg-key{display:inline-flex; align-items:center; gap:6px}
+.gantt-legend .lg-key::before{content:""; display:inline-block; width:14px; height:12px; border-radius:3px; background:var(--blue)}
+.gantt-legend .lg-key.dev::before{background:var(--blue)}
+.gantt-legend .lg-key.fpga::before{background:var(--amber)}
+.gantt-legend .lg-key.gtm::before{background:var(--green)}
+.gantt-legend .lg-key.rev::before{background:var(--copper)}
+.gantt-legend .lg-key.ms::before{background:var(--red); transform:rotate(45deg); border-radius:2px; width:10px; height:10px; margin:1px 2px}
+.today-line{position:absolute; top:0; bottom:0; width:2px; background:var(--red); z-index:5}
+.today-line::after{content:"TODAY"; position:absolute; top:2px; left:6px; font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--red); font-weight:600; letter-spacing:.05em}
+
+/* MARKETING */
+.mkt-hero{
+  background:linear-gradient(135deg, #0E7A4F 0%, #0F766E 100%);
+  color:#fff; border-radius:16px; padding:32px 36px; margin-bottom:26px;
+  display:grid; grid-template-columns:1.4fr 1fr; gap:26px; align-items:center;
+  position:relative; overflow:hidden;
+}
+.mkt-hero h1{color:#fff}
+.mkt-hero .tag{background:rgba(255,255,255,0.15); color:#fff; padding:5px 12px; border-radius:999px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}
+.mkt-hero .lead{color:rgba(255,255,255,0.8); font-size:14px; margin-top:10px}
+.mkt-hero-img{border-radius:12px; overflow:hidden; height:200px}
+.mkt-hero-img img{width:100%; height:100%; object-fit:cover; opacity:.85}
+@media (max-width:960px){.mkt-hero{grid-template-columns:1fr} .mkt-hero-img{height:160px}}
+
+.funnel{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:22px}
+@media (max-width:900px){.funnel{grid-template-columns:repeat(2,1fr)}}
+.fn-tile{
+  background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 12px;
+  position:relative; text-align:center; min-width:0;
+}
+.fn-tile.f1{border-top:3px solid var(--ink3)}
+.fn-tile.f2{border-top:3px solid var(--violet)}
+.fn-tile.f3{border-top:3px solid var(--blue)}
+.fn-tile.f4{border-top:3px solid var(--amber)}
+.fn-tile.f5{border-top:3px solid var(--green)}
+.fn-tile .stage{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink3); letter-spacing:.1em; text-transform:uppercase}
+.fn-tile .num{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:24px; margin:6px 0 2px; letter-spacing:-.02em}
+.fn-tile .desc{font-size:11px; color:var(--ink2); line-height:1.3}
+.fn-tile .conv{
+  display:inline-block; margin-top:6px;
+  background:var(--grid); border:1px solid var(--line); border-radius:10px; padding:2px 8px;
+  font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink2); font-weight:600;
+}
+
+.channel-cards{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:18px}
+@media (max-width:960px){.channel-cards{grid-template-columns:repeat(2,1fr)}}
+.ch{background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px; text-align:center}
+.ch .share{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; letter-spacing:-.02em}
+.ch .nm{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px; margin:4px 0 2px}
+.ch .rev{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink2)}
+.ch.c1{border-top:3px solid var(--blue)} .ch.c1 .share{color:var(--blue)}
+.ch.c2{border-top:3px solid var(--green)} .ch.c2 .share{color:var(--green)}
+.ch.c3{border-top:3px solid var(--copper)} .ch.c3 .share{color:var(--copper)}
+.ch.c4{border-top:3px solid var(--amber)} .ch.c4 .share{color:var(--amber)}
+.ch.c5{border-top:3px solid var(--violet)} .ch.c5 .share{color:var(--violet)}
+
+.mkt-cards{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media (max-width:960px){.mkt-cards{grid-template-columns:1fr}}
+.mkt-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px}
+.mkt-card h3{margin-bottom:6px}
+.mkt-card .sub{color:var(--ink2); font-size:12.5px; margin-bottom:12px}
+.mkt-list{list-style:none; padding:0; margin:0}
+.mkt-list li{padding:8px 0; border-bottom:1px dashed var(--line); font-size:13px; line-height:1.45}
+.mkt-list li:last-child{border-bottom:none}
+.mkt-list li strong{color:var(--ink)}
+.mkt-list li .tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink3); text-transform:uppercase; letter-spacing:.08em; margin-right:6px}
+
+/* RISKS */
+.risk-band{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:6px 0 22px}
+@media (max-width:900px){.risk-band{grid-template-columns:repeat(2,1fr)}}
+.risk-tile{background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px; border-top:3px solid var(--red); text-align:center}
+.risk-tile.rt-crit{border-top-color:var(--red)}
+.risk-tile.rt-high{border-top-color:var(--copper)}
+.risk-tile.rt-med{border-top-color:var(--amber)}
+.risk-tile.rt-low{border-top-color:var(--green)}
+.risk-tile .count{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:32px; letter-spacing:-.02em; margin-bottom:2px}
+.risk-tile.rt-crit .count{color:var(--red)}
+.risk-tile.rt-high .count{color:var(--copper)}
+.risk-tile.rt-med .count{color:var(--amber)}
+.risk-tile.rt-low .count{color:var(--green)}
+.risk-tile .lbl{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3)}
+.risk-tile .sub{font-size:12px; color:var(--ink2); margin-top:4px; line-height:1.35}
+
+/* top risks list */
+.top-risks{display:grid; grid-template-columns:1fr; gap:10px}
+.tr-row{
+  display:grid; grid-template-columns:56px minmax(0,1fr) 120px; gap:14px; align-items:center;
+  background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; border-left:4px solid var(--red);
+}
+.tr-row.high{border-left-color:var(--copper)}
+.tr-row.med{border-left-color:var(--amber)}
+.tr-row .id{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:var(--red); background:var(--red-soft); text-align:center; padding:8px 4px; border-radius:6px}
+.tr-row.high .id{color:var(--copper); background:var(--copper-soft)}
+.tr-row.med .id{color:var(--amber); background:var(--amber-soft)}
+.tr-row .body .name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; color:var(--ink)}
+.tr-row .body .mit{font-size:12.5px; color:var(--ink2); margin-top:4px; line-height:1.5}
+.tr-row .body .owner{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink3); margin-top:6px; text-transform:uppercase; letter-spacing:.04em}
+.tr-row .val{text-align:right}
+.tr-row .val .amt{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; color:var(--red)}
+.tr-row.high .val .amt{color:var(--copper)}
+.tr-row.med .val .amt{color:var(--amber)}
+.tr-row .val .l{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink3); text-transform:uppercase; letter-spacing:.06em; margin-top:4px}
+@media (max-width:700px){.tr-row{grid-template-columns:50px 1fr}.tr-row .val{grid-column:1/-1; text-align:left}}
+
+/* bottleneck cards */
+.bn-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+@media (max-width:960px){.bn-grid{grid-template-columns:1fr}}
+.bn-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 18px; border-left:3px solid var(--copper)}
+.bn-card h4{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; color:var(--ink); margin:0 0 4px}
+.bn-card .sub{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px}
+.bn-card ul{margin:6px 0 0; padding-left:16px; font-size:12.5px; color:var(--ink2); line-height:1.5}
+.bn-card ul li{margin-bottom:3px}
+.bn-card ul li strong{color:var(--ink)}
+
+/* Footer */
+.footer{margin-top:32px; padding-top:20px; border-top:1px solid var(--line); font-size:11.5px; color:var(--ink3); line-height:1.6}
+.footer .mono{color:var(--ink2)}
+
+/* PAGE toggle */
+.page{display:none}
+.page.active{display:block}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="logo">X</div>
+      <div>
+        <div class="brand-name">Xtremesilica</div>
+        <div class="brand-sub" id="pageSubtitle">Executive Dashboard · FY27 → FY30</div>
+      </div>
+    </div>
+    <div class="pagenav">
+      <a href="#home" class="pg-link" data-page="home">Home</a>
+      <a href="#gantt" class="pg-link" data-page="gantt">Gantt</a>
+      <a href="#marketing" class="pg-link" data-page="marketing">Marketing</a>
+      <a href="#risks" class="pg-link" data-page="risks">Risks</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page" id="page-home">
+<div class="wrap">
+
+  <!-- CRITICAL BLOCKERS — action required (matches reference theme) -->
+  <div class="blockers-hero">
+    <div class="blockers-topbar">
+      <div class="lhs">
+        <span class="warn">!</span>
+        <span class="title">Critical Blockers — Action Required</span>
+        <span class="sub">3 open · unblock to keep FY27–FY30 revenue plan on track</span>
+      </div>
+      <span class="count-pill">6 OPEN</span>
+    </div>
+    <div class="blockers-table-wrap">
+      <table class="blockers-table">
+        <thead>
+          <tr>
+            <th class="col-id">#</th>
+            <th class="col-blocker" style="text-align:right">BLOCKER</th>
+            <th class="col-sev">SEVERITY</th>
+            <th class="col-owner">OWNER</th>
+            <th class="col-target">TARGET<br>CLOSURE</th>
+            <th class="col-status">STATUS</th>
+            <th class="col-action" style="text-align:right">NEXT ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-id" data-lbl="#">B1</td>
+            <td class="col-blocker" data-lbl="Blocker">Claude &amp; AWS Server allotment for 22 of 41 IPs</td>
+            <td class="col-sev" data-lbl="Severity">HIGH</td>
+            <td class="col-owner" data-lbl="Owner">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span></td>
+            <td class="col-target" data-lbl="Target">10-Sep-26</td>
+            <td class="col-status" data-lbl="Status"><span class="status-pill">RED · REOPENED</span></td>
+            <td class="col-action" data-lbl="Next action"><strong>19/41 done</strong> — compute allotted for controllers listed earlier. <strong>22 IPs remain</strong>: H.265, AMBA AXI, PCIe Gen6 Sw, CXL, UALink 2.0, Ultra Ethernet, HBM4, <strong>5 RISC-V cores (XR-V1&hellip;V5)</strong>, and <strong>10 new Space IPs</strong> (V2SP, V3SP, ECC/EDAC, Memory Scrubber, Fault-Management, Lockstep/TMR, SpaceWire, SpaceFibre, NoC-FT, Root of Trust — added Sep-26, all UNASSIGNED). Target closure will slip well past 10-Sep without accelerated staffing.</td>
+          </tr>
+          <tr>
+            <td class="col-id" data-lbl="#">B2</td>
+            <td class="col-blocker" data-lbl="Blocker">SCL partnership for Space-IP rad-hard prototypes</td>
+            <td class="col-sev high" data-lbl="Severity">HIGH</td>
+            <td class="col-owner" data-lbl="Owner">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span><br>Girish B V<br><span style="font-size:10px; color:#8A94A8">girish@sionsemi.com</span></td>
+            <td class="col-target" data-lbl="Target">30-Sep-26</td>
+            <td class="col-status" data-lbl="Status"><span class="status-pill">RED · OPEN</span></td>
+            <td class="col-action" data-lbl="Next action">Sign up with <strong>SCL (Semi-Conductor Laboratory)</strong> for future Space IPs — rad-hardened prototypes on 180nm process; unlocks ISRO / DRDO / BEL pipeline</td>
+          </tr>
+          <tr>
+            <td class="col-id" data-lbl="#">B3</td>
+            <td class="col-blocker" data-lbl="Blocker">DLI funding for PCIe Gen6 Switch tapeout</td>
+            <td class="col-sev high" data-lbl="Severity">HIGH</td>
+            <td class="col-owner" data-lbl="Owner">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span><br>Girish B V<br><span style="font-size:10px; color:#8A94A8">girish@sionsemi.com</span></td>
+            <td class="col-target" data-lbl="Target">15-Oct-26</td>
+            <td class="col-status" data-lbl="Status"><span class="status-pill">RED · OPEN</span></td>
+            <td class="col-action" data-lbl="Next action">Discuss with <strong>C-DAC / IESA</strong> for <strong>DLI (Design Linked Incentive)</strong> funding — target: PCIe Gen6 Switch fabric tapeout ($400K ASP · $4.91M FY30 revenue)</td>
+          </tr>
+          <tr>
+            <td class="col-id" data-lbl="#">B4</td>
+            <td class="col-blocker" data-lbl="Blocker">3 new AI/Datacenter IPs &mdash; team assignment &amp; compute</td>
+            <td class="col-sev" data-lbl="Severity">CRITICAL</td>
+            <td class="col-owner" data-lbl="Owner">Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span></td>
+            <td class="col-target" data-lbl="Target">20-Sep-26</td>
+            <td class="col-status" data-lbl="Status"><span class="status-pill">RED · OPEN</span></td>
+            <td class="col-action" data-lbl="Next action">Three newly added AI/Datacenter &amp; memory IPs — <strong>UALink 2.0</strong> (chiplet fabric, competes with UCIe/NVLink), <strong>Ultra Ethernet</strong> (AI-cluster RDMA, competes with InfiniBand), <strong>HBM4 Controller</strong> (next-gen 3D-stacked memory) — all Mar-27 GA. RTL &amp; DV owners <strong>UNASSIGNED</strong>, Claude + AWS <strong>NOT ALLOTTED</strong>. Every week unstaffed pushes Mar-27 gate to Jun-27 and puts ~$2.4M FY30 revenue at risk.</td>
+          </tr>
+          <tr>
+            <td class="col-id" data-lbl="#">B5</td>
+            <td class="col-blocker" data-lbl="Blocker">RISC-V CPU family (5 cores XR-V1&hellip;V5) &mdash; new product line, entire team to build</td>
+            <td class="col-sev" data-lbl="Severity">CRITICAL</td>
+            <td class="col-owner" data-lbl="Owner">CEO + Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span></td>
+            <td class="col-target" data-lbl="Target">30-Sep-26</td>
+            <td class="col-status" data-lbl="Status"><span class="status-pill">RED · OPEN</span></td>
+            <td class="col-action" data-lbl="Next action">Five new RISC-V cores added to portfolio &mdash; <strong>XR-V1</strong> (RV32 tiny, IoT/wearables), <strong>XR-V2</strong> (RV32 perf MCU, automotive/robotics), <strong>XR-V3</strong> (RV64 efficient AP, edge-AI/drones), <strong>XR-V4</strong> (RV64 OoO, Linux/networking/cockpit), <strong>XR-V5</strong> (RV64 Vector, AI accelerators/HPC). RTL/DV <strong>UNASSIGNED across all 5</strong>, no compute. Requires a <strong>net-new CPU architecture team (5-8 engineers)</strong> &mdash; hiring plan due by 20-Sep. Represents <strong>$7.85M FY30</strong> (22% of the 41-IP model); slippage puts the uplift to $36.20M at risk.</td>
+          </tr>
+          <tr>
+            <td class="col-id" data-lbl="#">B6</td>
+            <td class="col-blocker" data-lbl="Blocker">Space IP portfolio (10 IPs) &mdash; rad-hard team + SCL/ISRO qualification path</td>
+            <td class="col-sev" data-lbl="Severity">CRITICAL</td>
+            <td class="col-owner" data-lbl="Owner">CEO + Basheer Boddikonda<br><span style="font-size:10px; color:#8A94A8">ahmed@sionsemi.com</span></td>
+            <td class="col-target" data-lbl="Target">15-Oct-26</td>
+            <td class="col-status" data-lbl="Status"><span class="status-pill">RED · OPEN</span></td>
+            <td class="col-action" data-lbl="Next action">Ten new Space IPs &mdash; <strong>V2SP</strong> (16-bit RISC-V space processor), <strong>V3SP</strong> (32-bit RISC-V space processor), <strong>ECC/EDAC library</strong>, <strong>Memory Scrubber</strong>, <strong>Fault-Management Controller</strong>, <strong>Lockstep/TMR library</strong>, <strong>SpaceWire</strong> (controller/router), <strong>SpaceFibre</strong> (controller), <strong>NoC-FT</strong> (fault-tolerant NoC), <strong>Root of Trust</strong>. RTL/DV UNASSIGNED across all 10. Requires a <strong>dedicated rad-hard/space-IP team (4-6 engineers)</strong> with fault-tolerance experience, plus <strong>SCL 180nm tape-out slot</strong> (couples with B2). Represents <strong>$4M FY30</strong> uplift (from $32.20M → $36.20M) and opens the ISRO/DRDO/BEL/Ananth Technologies pipeline. Hiring plan + SCL MoU due by 15-Oct.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="blockers-objective">
+      <strong>Immediate objective:</strong> B1 <strong>REOPENED · HIGH · RED</strong> — 19/41 resourced; 22 IPs pending (4 old + 3 AI/DC + 5 RISC-V + <strong>10 Space</strong>). B4 <strong>CRITICAL</strong>: 3 AI/DC IPs unstaffed. B5 <strong>CRITICAL</strong>: RISC-V CPU family, team to be hired. <strong>B6 CRITICAL (new): Space IP portfolio &mdash; rad-hard team + SCL qualification path</strong>. B2/B3 stay open.
+    </div>
+  </div>
+
+  <!-- CASH-FLOW vs REVENUE (monthly, INR Cr) -->
+  <div class="main-proj" id="cashflow-card">
+    <div class="main-proj-hd">
+      <div>
+        <div class="title">Cash-flow &amp; revenue projection · monthly · Sep 2026 → Mar 2030</div>
+        <div class="title-sub">Starting cash ₹70L · Annual funding ₹70L on 1-Sep 2027/28/29 · FX ₹85/USD</div>
+      </div>
+      <div class="legend">
+        <span class="lk">Monthly revenue</span>
+        <span class="lk opex">Monthly opex</span>
+        <span class="lk cash">Cash balance</span>
+        <span class="lk fund">Funding events</span>
+      </div>
+    </div>
+
+    <div class="main-proj-fy">
+      <div class="fy f1">
+        <div class="yr">Starting cash · 3 Sep 2026</div>
+        <div class="amt">₹0.70 Cr</div>
+        <span class="growth">₹70L opening balance</span>
+        <div class="note">Runway till first revenue Sep-27</div>
+      </div>
+      <div class="fy f2">
+        <div class="yr">Cash TROUGH · Aug 2027</div>
+        <div class="amt" style="color:var(--red)">−₹0.08 Cr</div>
+        <span class="growth" style="color:var(--red); background:var(--red-soft)">Bridge needed</span>
+        <div class="note">1 month gap before Sep-27 funding + first rev</div>
+      </div>
+      <div class="fy f3">
+        <div class="yr">Funding · every 1-Sep</div>
+        <div class="amt">₹0.70 Cr</div>
+        <span class="growth">×3 injections</span>
+        <div class="note">1-Sep-2027 · 2028 · 2029 (₹2.1 Cr total)</div>
+      </div>
+      <div class="fy f4">
+        <div class="yr">Cash balance · Mar 2030</div>
+        <div class="amt">₹474 Cr</div>
+        <span class="growth">Self-funded from FY28</span>
+        <div class="note">4-yr revenue ₹476 Cr · $56M</div>
+      </div>
+    </div>
+
+    <div class="main-proj-chart" style="height:400px"><canvas id="chartCashflow"></canvas></div>
+
+    <div class="main-proj-foot">
+      <span>41-IP market-benchmark model · Opex ₹6L/mo till Jun-27, +50% annually thereafter · First revenue $360K on 1-Sep-2027 · 26 controllers + 5 RISC-V + 10 Space IPs</span>
+      <span class="target" style="background:var(--red-soft); color:var(--red)">Aug-2027 cash trough −₹8L · needs ₹15L bridge or accelerated Sep funding</span>
+      <span class="cum">Currency: ₹ Cr · 1 Cr = ₹10M</span>
+    </div>
+  </div>
+
+  <!-- MAIN PROJECTION — full-width flagship graph with integrated FY tiles -->
+  <div class="main-proj">
+    <div class="main-proj-hd">
+      <div>
+        <div class="title">Revenue projection · FY2027 → FY2030</div>
+        <div class="title-sub">4 revenue streams stacked · annual + cumulative overlay · $35M target line</div>
+      </div>
+      <div class="legend">
+        <span class="lk">License</span>
+        <span class="lk mnt">Maintenance</span>
+        <span class="lk roy">Royalties</span>
+        <span class="lk nre">NRE / Services</span>
+        <span class="lk cum">Cumulative</span>
+        <span class="lk tgt">$35M target</span>
+      </div>
+    </div>
+
+    <div class="main-proj-fy">
+      <div class="fy f1">
+        <div class="yr">FY2027 · No revenue yet</div>
+        <div class="amt">$0</div>
+        <span class="growth">Runway phase</span>
+        <div class="note">First deal Sep-2027 (FY28)</div>
+      </div>
+      <div class="fy f2">
+        <div class="yr">FY2028 · First-revenue year</div>
+        <div class="amt">$4.20M</div>
+        <span class="growth">Controllers + RISC-V + Space debut</span>
+        <div class="note">Sep-27 → Mar-28 · early Space NRE + MCU royalties</div>
+      </div>
+      <div class="fy f3">
+        <div class="yr">FY2029</div>
+        <div class="amt">$15.60M</div>
+        <span class="growth">+271% YoY</span>
+        <div class="note">RISC-V edge-AI + Space rad-hard wins scale</div>
+      </div>
+      <div class="fy f4">
+        <div class="yr">FY2030</div>
+        <div class="amt">$36.20M</div>
+        <span class="growth">+132% YoY</span>
+        <div class="note">41-IP portfolio · $56.00M 4-yr</div>
+      </div>
+    </div>
+
+    <div class="main-proj-chart"><canvas id="chartMainProj"></canvas></div>
+
+    <div class="main-proj-foot">
+      <span>Market-benchmark projection · 41-IP portfolio (26 controllers + 5 RISC-V + 10 Space) · new-entrant IP-vendor curve (SiFive Y4, Andes Y5, Alphawave + Cobham/Frontgrade/Ramon Space-IP comparables)</span>
+      <span class="target">$35M FY30 target · CLEARED by $1.20M</span>
+      <span class="cum">4-yr cumulative revenue: $56.00M</span>
+    </div>
+  </div>
+
+  <!-- Supporting mix charts (compact, secondary) -->
+  <div class="grid-3">
+    <div class="card">
+      <h3>FY30 stream mix</h3>
+      <div class="sub">$75.27M · 4 engines</div>
+      <div class="chart-box" style="height:240px"><canvas id="chartDonut"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>FY30 by IP wave</h3>
+      <div class="sub">13 Dec-26 vs 5 Mar-27</div>
+      <div class="chart-box" style="height:240px"><canvas id="chartWave"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Cumulative revenue</h3>
+      <div class="sub">Running total · $56.00M by FY30 (41-IP market-benchmark)</div>
+      <div class="chart-box" style="height:240px"><canvas id="chartCum"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 41 IP compact chips -->
+  <div class="section-label">CONTROLLER + CPU + SPACE PORTFOLIO</div>
+  <h2 class="section-title">Forty-one IPs · 26 controllers + 5 RISC-V + 10 Space · FY30 revenue per IP</h2>
+  <div class="section-sub">Blue = Dec-26 GA · Copper = Mar-27 GA · Green = RISC-V · Red = Space (rad-hard) · Bar shows current dev progress · +10 Space IPs added Sep-26 (all UNASSIGNED)</div>
+
+  <div class="ip-compact" id="ipCompact"></div>
+
+  <!-- Dev progress compact -->
+  <div class="section-label" style="margin-top:26px">DEVELOPMENT PROGRESS</div>
+  <h2 class="section-title">RTL + DV progress · all 41 IPs at a glance</h2>
+  <div class="section-sub">Source: Xtremesilica-Employees (6).xlsx · 1 Sep 2026 · Green = &ge;70% · Blue = 45–69% · Amber = &lt;45%</div>
+
+  <div class="prog-grid" id="progGrid"></div>
+
+  <!-- Revenue table (compact) -->
+  <div class="section-label" style="margin-top:26px">FINANCIAL DETAIL</div>
+  <h2 class="section-title">Revenue table by stream and IP (USD)</h2>
+  <div class="section-sub">Machine-readable view of every number on this page</div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Segment</th><th>FY2027</th><th>FY2028</th><th>FY2029</th><th>FY2030</th><th>4-yr total</th>
+        </tr>
+      </thead>
+      <tbody id="tblRevenue"></tbody>
+      <tfoot><tr id="tblRevenueTotal"></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="mono">SOURCES · <a href="https://www.xtremesilica.com" target="_blank" rel="noopener">xtremesilica.com</a> (portfolio, FPGA validation, partners) · Xtremesilica-Employees (6).xlsx (progress, RTL/DV owners, target dates) · Rambus &amp; Arteris FY25 IR filings (benchmark ASPs and channel ratios).</div>
+    <div style="margin-top:8px">Assumptions: Controller-only licensing (no PHY revenue) · 20% maintenance ARR · Royalties 0.4–0.8% of end-SoC ASP with 24-month lag · NRE at 35% attach × $200K + 3 flagship SoC programs FY30.</div>
+  </div>
+
+</div><!-- /wrap -->
+</div><!-- /page-home -->
+
+<!-- ==================== GANTT PAGE ==================== -->
+<div class="page" id="page-gantt">
+<div class="wrap">
+  <div style="margin-bottom:22px">
+    <span class="pill pill-blue">42-MONTH TIMELINE · SEP 2026 → MAR 2030</span>
+    <h1 style="margin-top:10px">Development &amp; Go-to-Market Gantt</h1>
+    <p style="max-width:900px; color:var(--ink2); font-size:14px; margin-top:10px">Every IP shown on one timeline: <strong>Dev progress → FPGA-proof milestone → GTM ramp → Revenue-active</strong>. Diamonds mark FPGA-proof dates; red line = TODAY.</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Timeline span</div><div class="val">42 mo</div><div class="sub">Sep-26 → Mar-30</div></div>
+    <div class="kpi k-green"><div class="lbl">Dec-26 wave</div><div class="val">13</div><div class="sub">FPGA-proof milestones</div></div>
+    <div class="kpi k-copper"><div class="lbl">Mar-27 wave</div><div class="val">28</div><div class="sub">Controllers 13 + 5 RISC-V + 10 Space</div></div>
+    <div class="kpi k-amber"><div class="lbl">Revenue window</div><div class="val">39 mo</div><div class="sub">All IPs revenue-active by Q2-27</div></div>
+  </div>
+
+  <div class="gantt-wrap">
+    <div class="gantt">
+      <div class="gantt-cell hd name">IP · Progress · GA</div>
+      <div class="gantt-cell hd track" id="gantt-scale-cell"></div>
+    </div>
+    <div id="ganttBody"></div>
+    <div class="gantt-legend">
+      <span class="lg-key dev">Development (RTL + DV)</span>
+      <span class="lg-key ms">FPGA-proof milestone</span>
+      <span class="lg-key fpga">FPGA-proof → GA buffer</span>
+      <span class="lg-key gtm">Go-to-market ramp</span>
+      <span class="lg-key rev">Revenue-active</span>
+      <span class="lg-key" style="font-weight:600; color:var(--red)">TODAY · 2 Sep 2026</span>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:26px">MILESTONE SUMMARY</div>
+  <h2 class="section-title">Critical FPGA-proof dates by month</h2>
+  <div class="section-sub">The next 7 months hold all 41 FPGA-proof milestones · one-month slip = FY28 booking window pushes to FY29</div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>Target</th><th>IPs</th><th>Count</th><th>Progress today</th></tr></thead>
+      <tbody id="tblMile"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="mono">Timeline built from Xtremesilica-Employees (6).xlsx · Project End Date = FPGA-proof · Progress % = RTL+DV combined completion.</div>
+  </div>
+</div>
+</div><!-- /page-gantt -->
+
+<!-- ==================== MARKETING PAGE ==================== -->
+<div class="page" id="page-marketing">
+<div class="wrap">
+  <div class="mkt-hero" style="grid-template-columns:1fr; padding:28px 32px">
+    <div>
+      <span class="tag">Marketing &amp; Lead-Generation Plan</span>
+      <h1 style="margin-top:12px; font-size:32px">The engine that produces 203 licenses over 4 years</h1>
+      <p class="lead">Funnel · channels · content · named accounts · retention motions. Sized to deliver the $75.27M FY30 target with 2× pipeline coverage.</p>
+    </div>
+  </div>
+
+  <!-- FUNNEL -->
+  <div class="section-label">FY30 FUNNEL</div>
+  <h2 class="section-title">Funnel math — 51 licenses/year at steady state</h2>
+  <div class="section-sub">Public IP-vendor benchmarks (Rambus / Arteris / Alphawave IR filings): MQL → SQL 25% · SQL → Opp 40% · Opp → Win 50%</div>
+
+  <div class="funnel">
+    <div class="fn-tile f1"><div class="stage">Reach</div><div class="num">5.1M</div><div class="desc">Web · events · content</div></div>
+    <div class="fn-tile f2"><div class="stage">MQL</div><div class="num">2,040</div><div class="desc">Downloads · demos · scans</div><span class="conv">25% conv.</span></div>
+    <div class="fn-tile f3"><div class="stage">SQL</div><div class="num">510</div><div class="desc">Budget + fit confirmed</div><span class="conv">40% conv.</span></div>
+    <div class="fn-tile f4"><div class="stage">Opportunity</div><div class="num">204</div><div class="desc">NDA + priced bid</div><span class="conv">50% conv.</span></div>
+    <div class="fn-tile f5"><div class="stage">Design-Win</div><div class="num">102</div><div class="desc">2× target cover</div></div>
+  </div>
+
+  <!-- Channels -->
+  <div class="section-label">CHANNELS</div>
+  <h2 class="section-title">Five channels · FY30 revenue share</h2>
+  <div class="section-sub">HCLTech alliance is the dominant channel (announced 6 Jun 2026)</div>
+
+  <div class="channel-cards">
+    <div class="ch c1"><div class="share">40%</div><div class="nm">HCLTech Alliance</div><div class="rev">$30.1M</div></div>
+    <div class="ch c2"><div class="share">25%</div><div class="nm">Direct Sales</div><div class="rev">$18.8M</div></div>
+    <div class="ch c3"><div class="share">20%</div><div class="nm">Sion Semi</div><div class="rev">$15.1M</div></div>
+    <div class="ch c4"><div class="share">10%</div><div class="nm">TSMC IP Alliance</div><div class="rev">$7.5M</div></div>
+    <div class="ch c5"><div class="share">5%</div><div class="nm">Arm Ref Designs</div><div class="rev">$3.8M</div></div>
+  </div>
+
+  <!-- Content + Events / Digital + ABM -->
+  <div class="mkt-cards">
+    <div class="mkt-card">
+      <h3>Demand-generation engine</h3>
+      <div class="sub">Cadence &amp; volume mapped to funnel targets</div>
+      <ul class="mkt-list">
+        <li><span class="tag">Weekly</span><strong>Technical blog</strong> · 40K organic pv/mo by FY28</li>
+        <li><span class="tag">Monthly</span><strong>White papers · app notes</strong> · gated · 800 MQL/qtr</li>
+        <li><span class="tag">Monthly</span><strong>Live webinars</strong> · with HCLTech, Synopsys, Alphawave</li>
+        <li><span class="tag">Quarterly</span><strong>FPGA reference designs</strong> · ~40 SQLs/qtr</li>
+        <li><span class="tag">Annual</span><strong>Events</strong> · DAC · OCP · SNUG · Chip India</li>
+      </ul>
+    </div>
+
+    <div class="mkt-card">
+      <h3>Named accounts (ABM · 100 targets)</h3>
+      <div class="sub">Where 102 design-wins/yr are pursued</div>
+      <ul class="mkt-list">
+        <li><span class="tag">AI/Cloud · 25</span>NVIDIA · AMD · Intel · Broadcom · Meta · Google · AWS &hellip; <em>CXL, UCIe, 800G, PCIe Sw</em></li>
+        <li><span class="tag">Auto · 20</span>Renesas · Infineon · NXP · Bosch · Mobileye &hellip; <em>MIPI, LPDDR5, DP, AXI</em></li>
+        <li><span class="tag">Storage · 15</span>Samsung · SK hynix · Kioxia · WDC · Solidigm &hellip; <em>NVMe, PCIe, DDR5</em></li>
+        <li><span class="tag">Network · 15</span>Broadcom · Marvell · Cisco · Nokia · Ericsson &hellip; <em>100G/800G MAC, Switch</em></li>
+        <li><span class="tag">Consumer · 15</span>Qualcomm · MediaTek · UNISOC · Realtek &hellip; <em>USB stack, H.265, HDMI 2.2, DP 2.0</em></li>
+        <li><span class="tag">Defence · 10</span>BAE · Raytheon · Lockheed · BEL · HAL &hellip; <em>rad-hard AXI, PCIe</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Retention + Investment combined -->
+  <div class="section-label" style="margin-top:26px">RETENTION &amp; INVESTMENT</div>
+  <h2 class="section-title">Recurring revenue motions + budget</h2>
+  <div class="section-sub">$7.84M ARR + $17.91M NRE need dedicated motions · $14.16M 4-yr marketing budget (10.4% of revenue)</div>
+
+  <div class="grid-3">
+    <div class="mkt-card">
+      <h3>Maintenance ARR motion</h3>
+      <div class="sub">20% of installed license value / yr</div>
+      <ul class="mkt-list">
+        <li><span class="tag">Contract</span>3-year term baked into every SoW · auto-renewal year 4</li>
+        <li><span class="tag">Product</span>Quarterly release train · DV regression + spec-rev ECNs</li>
+        <li><span class="tag">CS</span>Named TAM from win $200K+ · QBRs · upsell path</li>
+        <li><span class="tag">Target</span><strong>92% renewal</strong> (industry 90–95%)</li>
+      </ul>
+    </div>
+
+    <div class="mkt-card">
+      <h3>NRE / services motion</h3>
+      <div class="sub">35% attach × $200K + 3 flagship SoC programs</div>
+      <ul class="mkt-list">
+        <li><span class="tag">SKUs</span>Node Hardening $150K · Integration $300K · Full SoC $1M+</li>
+        <li><span class="tag">Delivery</span>Sion (ASIC/hardening) + HCLTech (integration/verification)</li>
+        <li><span class="tag">Trigger</span>30-day service proposal after every license (sales KPI)</li>
+        <li><span class="tag">Flagship</span>3 named "flagship SoC" pursuits/yr</li>
+      </ul>
+    </div>
+
+    <div class="mkt-card">
+      <h3>Marketing &amp; sales budget</h3>
+      <div class="sub">$14.16M over 4 years · declining % of revenue</div>
+      <ul class="mkt-list">
+        <li><span class="tag">FY27</span><strong>$955K</strong> · 29% of revenue · ramp year</li>
+        <li><span class="tag">FY28</span><strong>$3.05M</strong> · 18% of revenue</li>
+        <li><span class="tag">FY29</span><strong>$4.43M</strong> · 11% of revenue</li>
+        <li><span class="tag">FY30</span><strong>$5.72M</strong> · 7.6% of revenue · at scale</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout amber" style="margin-top:16px">
+    <strong>The four bets holding the plan.</strong>
+    HCLTech joint CRM (750 accounts) by Dec-26 · 3 flagship SoC pursuit lists by Q1-27 · 92% renewal discipline · content engine begins Q4-26.
+  </div>
+
+  <div class="footer">
+    <div class="mono">Marketing plan sized to the 41-IP FY30 target ($36.20M market-benchmark model) · 26 controllers + 5 RISC-V + 10 Space IPs · funnel benchmarks from public IP-vendor IR filings.</div>
+  </div>
+</div>
+</div><!-- /page-marketing -->
+
+<!-- ==================== RISKS PAGE ==================== -->
+<div class="page" id="page-risks">
+<div class="wrap">
+  <div style="margin-bottom:22px">
+    <span class="pill pill-red">18 RISKS TRACKED · $54.7M PROTECTED</span>
+    <h1 style="margin-top:10px">Risks &amp; Mitigation Plan</h1>
+    <p style="max-width:900px; color:var(--ink2); font-size:14px; margin-top:10px">18 risks across <strong>3 categories</strong> — Dependency risks (PHY vendors, partners, foundries), Shared-engineer bottlenecks (single-owner IPs, capacity), IP development delays (FPGA-proof slippage). Every risk carries severity, revenue-at-risk, mitigation action, and named owner.</p>
+  </div>
+
+  <!-- Risk band -->
+  <div class="risk-band">
+    <div class="risk-tile rt-crit"><div class="lbl">Critical</div><div class="count">4</div><div class="sub">$28.4M at risk · this quarter</div></div>
+    <div class="risk-tile rt-high"><div class="lbl">High</div><div class="count">7</div><div class="sub">$18.6M at risk · monthly review</div></div>
+    <div class="risk-tile rt-med"><div class="lbl">Medium</div><div class="count">5</div><div class="sub">$6.9M at risk · quarterly review</div></div>
+    <div class="risk-tile rt-low"><div class="lbl">Low</div><div class="count">2</div><div class="sub">$0.8M at risk · watch-list</div></div>
+  </div>
+
+  <!-- Top 4 Critical -->
+  <div class="section-label">CRITICAL — 4 RISKS · $28.4M FY30 AT RISK</div>
+  <h2 class="section-title">"If any of these break, the plan breaks"</h2>
+  <div class="section-sub">Every P0 risk has a mitigation action, owner, and trigger date</div>
+
+  <div class="top-risks">
+    <div class="tr-row">
+      <div class="id">R01</div>
+      <div class="body">
+        <div class="name">3rd-party PHY vendor slippage on UCIe / 224G SerDes</div>
+        <div class="mit"><strong>Mitigation:</strong> Lock signed PHY-availability commitments from 2 vendors per interface by Q4-26. Build FPGA reference designs with Alphawave 112G SerDes eval kits. Publish "controller + PHY validated pair" matrix.</div>
+        <div class="owner">Owner: VP Alliances · Trigger: 31 Dec 2026 · Review: Monthly</div>
+      </div>
+      <div class="val"><div class="amt">$7.0M</div><div class="l">FY30 at risk</div></div>
+    </div>
+
+    <div class="tr-row">
+      <div class="id">R02</div>
+      <div class="body">
+        <div class="name">HCLTech alliance under-delivers on 40% FY30 channel</div>
+        <div class="mit"><strong>Mitigation:</strong> Named HCLTech industry-lead owners in joint CRM by 31-Dec-26 (750 accounts). Quarterly review with HCLTech CDO. 3 dedicated Xtremesilica alliance FTEs.</div>
+        <div class="owner">Owner: CEO + VP Alliances · Trigger: 31 Dec 2026 · Review: Monthly</div>
+      </div>
+      <div class="val"><div class="amt">$12.0M</div><div class="l">FY30 at risk</div></div>
+    </div>
+
+    <div class="tr-row">
+      <div class="id">R07</div>
+      <div class="body">
+        <div class="name">USB team owns 3 sequential USB IPs with no backup</div>
+        <div class="mit"><strong>Mitigation:</strong> Add shadow RTL engineer by 30-Sep-26. Dedicated USB DV for 3.2/4.0. Weekly USB program review with COO. Cross-train 1 additional engineer on xHCI by Q1-27.</div>
+        <div class="owner">Owner: COO · Trigger: 30 Sep 2026 (4 weeks) · Review: Weekly</div>
+      </div>
+      <div class="val"><div class="amt">$7.6M</div><div class="l">FY30 at risk</div></div>
+    </div>
+
+    <div class="tr-row">
+      <div class="id">R08</div>
+      <div class="body">
+        <div class="name">Ethernet team 100G → 800G pivot without 224G SerDes experience</div>
+        <div class="mit"><strong>Mitigation:</strong> Hire 1 senior Ethernet architect with 112G/224G SerDes experience by 31-Dec-26 to lead 800G. Alphawave 112G eval kit ordered 15-Sep-26. 4-week overlap between 100G signoff and 800G kickoff.</div>
+        <div class="owner">Owner: Chief Architect · Trigger: 31 Dec 2026 · Review: Bi-weekly</div>
+      </div>
+      <div class="val"><div class="amt">$5.0M</div><div class="l">FY30 at risk</div></div>
+    </div>
+  </div>
+
+  <!-- Shared bottlenecks -->
+  <div class="section-label" style="margin-top:26px">SHARED-ENGINEER BOTTLENECKS</div>
+  <h2 class="section-title">Where one team serves multiple IPs</h2>
+  <div class="section-sub">Single-team dependencies from the roster · sick-leave or attrition ripples across every IP in the row</div>
+
+  <div class="bn-grid">
+    <div class="bn-card">
+      <h4>USB team · Aiswarya + Siddam Vasuki Abhirami</h4>
+      <div class="sub">5 sequential projects · Device + Host variants · ≈$1.35M FY30 at team-level risk</div>
+      <ul>
+        <li><strong>USB 2.0 Device</strong> (Dec-26 · 50%) — $0.35M FY30</li>
+        <li><strong>USB 2.0 Host</strong> (Mar-27 · 20%) — $0.20M FY30</li>
+        <li><strong>USB 3.2 Device</strong> (Dec-26 · 20%) — $0.34M FY30</li>
+        <li><strong>USB 3.2 Host</strong> (Mar-27 · 20%) — $0.20M FY30</li>
+        <li><strong>USB 4.0</strong> (Mar-27 · 20%) — $0.42M FY30</li>
+      </ul>
+    </div>
+    <div class="bn-card">
+      <h4>Ethernet team · Karthikeya + Dommara</h4>
+      <div class="sub">2 projects · 100G → 800G pivot · ≈$1.31M FY30 at risk</div>
+      <ul>
+        <li><strong>100G Ethernet MAC</strong> (Dec-26 · 50%) — $0.57M FY30</li>
+        <li><strong>800G Ethernet MAC</strong> (Mar-27 · 20%) — $0.73M FY30</li>
+      </ul>
+    </div>
+    <div class="bn-card">
+      <h4>Sankara Narayanan C · single RTL owner, 4 IPs</h4>
+      <div class="sub">Highest key-person risk · all DV slots open · +ACE 5.0 &amp; CHI added Sep-26 · ≈$1.32M FY30</div>
+      <ul>
+        <li><strong>HDMI 2.2</strong> (Dec-26 · 50%) — $0.38M FY30</li>
+        <li><strong>AMBA AXI</strong> (Dec-26 · 20%) — $0.46M FY30</li>
+        <li><strong>ACE 5.0</strong> (Mar-27 · 15%) — $0.24M FY30</li>
+        <li><strong>CHI</strong> (Mar-27 · 15%) — $0.24M FY30</li>
+      </ul>
+    </div>
+    <div class="bn-card">
+      <h4>Yaswanth Kumar · NVMe team (Device + Host)</h4>
+      <div class="sub">2 parallel NVMe 2.3 variants · Aadithya on Device DV · Host DV OPEN · ≈$0.60M FY30</div>
+      <ul>
+        <li><strong>NVMe Device 2.3</strong> (Dec-26 · 85%) — $0.40M FY30</li>
+        <li><strong>NVMe Host 2.3</strong> (Mar-27 · 20%) — $0.20M FY30</li>
+      </ul>
+    </div>
+    <div class="bn-card">
+      <h4>9 open DV requisitions · $22.4M FY30 pending hires</h4>
+      <div class="sub">RTL runs ahead of DV — FPGA-proof gate fails without DV closure</div>
+      <ul>
+        <li>DDR5 · H.265 · 100G Switch · HDMI 2.2 · DP 2.0 · AMBA AXI (Dec-26)</li>
+        <li>CXL · UCIe · PCIe Gen6 Switch (Mar-27)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- All 18 risks compact table -->
+  <div class="section-label" style="margin-top:26px">FULL RISK REGISTER · 18 RISKS</div>
+  <h2 class="section-title">All tracked risks with owner and trigger</h2>
+  <div class="section-sub">CRIT ≥ $5M · HIGH $1.5–5M · MED $500K–1.5M · LOW &lt; $500K</div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>#</th><th>Risk</th><th>Category</th><th>Severity</th><th>At Risk</th><th>Owner</th><th>Trigger</th></tr></thead>
+      <tbody id="tblRisks"></tbody>
+    </table>
+  </div>
+
+  <div class="callout red" style="margin-top:16px">
+    <strong>The 4 P0 risks in review order:</strong>
+    R07 (USB team, 4 weeks) → R01 (PHY vendors, Dec) → R02 (HCLTech, Dec) → R08 (Ethernet 100G→800G, Dec).
+    Every one of these is worth &gt;$5M FY30. Weekly ops reviews escalate to CEO on any red status.
+  </div>
+
+  <div class="footer">
+    <div class="mono">Risk register built from portfolio dependencies (xtremesilica.com), employee data (Xtremesilica-Employees (6).xlsx), and the 41-IP revenue model ($36.20M FY30 market-benchmark).</div>
+  </div>
+</div>
+</div><!-- /page-risks -->
+
+<script>
+// ================== DATA ==================
+const IPS = [
+  {name:"PCIe Gen6",       full:"PCIe Gen6 Controller",       cat:"HIGH-SPEED",   color:"blue",   price:225000, ga:"Dec-26", pct:0.70, target:"31 Dec 2026", rtl:"Bandaru Harish", dv:"Kuna Rajesh"},
+  {name:"DDR5",            full:"DDR5 Controller",            cat:"MEMORY",       color:"copper", price:200000, ga:"Dec-26", pct:0.50, target:"30 Nov 2026", rtl:"S Siva Bhima Shankar", dv:"OPEN"},
+  {name:"LPDDR5",          full:"LPDDR5 Controller",          cat:"MEMORY",       color:"copper", price:175000, ga:"Dec-26", pct:0.50, target:"30 Nov 2026", rtl:"Batta Venkatesh", dv:"Mohan Kumar"},
+  {name:"100G MAC",        full:"100G Ethernet MAC",          cat:"NETWORK",      color:"green",  price:200000, ga:"Dec-26", pct:0.50, target:"30 Nov 2026", rtl:"Karthikeya S K", dv:"Dommara Monish"},
+  {name:"100G Switch",     full:"100G Ethernet Switch",       cat:"NETWORK",      color:"green",  price:275000, ga:"Dec-26", pct:0.20, target:"31 Dec 2026", rtl:"Ankith D R", dv:"OPEN"},
+  {name:"NVMe Dev 2.3",    full:"NVMe Device Controller 2.3", cat:"STORAGE",      color:"amber",  price:175000, ga:"Dec-26", pct:0.85, target:"30 Nov 2026", rtl:"Yaswanth Kumar", dv:"Aadithya"},
+  {name:"NVMe Host 2.3",   full:"NVMe Host Controller 2.3",   cat:"STORAGE",      color:"amber",  price:175000, ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Yaswanth Kumar", dv:"OPEN"},
+  {name:"H.265",           full:"H.265 Codec",                cat:"VIDEO",        color:"amber",  price:225000, ga:"Dec-26", pct:0.50, target:"30 Nov 2026", rtl:"Dondeti Harshavardhini", dv:"OPEN"},
+  {name:"HDMI 2.2",        full:"HDMI 2.2 Controller",        cat:"VIDEO",        color:"amber",  price:145000, ga:"Dec-26", pct:0.50, target:"30 Sep 2026", rtl:"Sankara Narayanan C", dv:"OPEN"},
+  {name:"USB 2.0 Dev",     full:"USB 2.0 Device Controller",  cat:"INTERFACE",    color:"violet", price:60000,  ga:"Dec-26", pct:0.50, target:"30 Sep 2026", rtl:"Aiswarya", dv:"Siddam Vasuki"},
+  {name:"USB 2.0 Host",    full:"USB 2.0 Host Controller",    cat:"INTERFACE",    color:"violet", price:60000,  ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Aiswarya", dv:"OPEN"},
+  {name:"USB 3.2 Dev",     full:"USB 3.2 Device Controller",  cat:"INTERFACE",    color:"violet", price:95000,  ga:"Dec-26", pct:0.20, target:"31 Dec 2026", rtl:"Aiswarya", dv:"Siddam Vasuki"},
+  {name:"USB 3.2 Host",    full:"USB 3.2 Host Controller",    cat:"INTERFACE",    color:"violet", price:95000,  ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Aiswarya", dv:"OPEN"},
+  {name:"DP 2.0",          full:"DisplayPort 2.0 Controller", cat:"DISPLAY",      color:"violet", price:170000, ga:"Dec-26", pct:0.20, target:"30 Oct 2026", rtl:"Veerapureddy Suvarna", dv:"OPEN"},
+  {name:"MIPI CSI-2",      full:"MIPI CSI-2 Controller",      cat:"INTERFACE",    color:"teal",   price:135000, ga:"Dec-26", pct:0.20, target:"30 Nov 2026", rtl:"Yarramreddy Deekshitha", dv:"Janardhan Reddy"},
+  {name:"AMBA AXI",        full:"AMBA AXI Interconnect",      cat:"INTERCONNECT", color:"teal",   price:85000,  ga:"Dec-26", pct:0.20, target:"30 Oct 2026", rtl:"Sankara Narayanan C", dv:"OPEN"},
+  {name:"USB 4.0",         full:"USB 4.0 Controller",         cat:"INTERFACE",    color:"violet", price:180000, ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Aiswarya", dv:"Siddam Vasuki"},
+  {name:"800G MAC",        full:"800G Ethernet MAC",          cat:"NETWORK",      color:"amber",  price:325000, ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Karthikeya S K", dv:"Dommara Monish"},
+  {name:"PCIe Gen6 Sw",    full:"PCIe Gen6 Switch",           cat:"HIGH-SPEED",   color:"red",    price:400000, ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Siraparapu Praveen", dv:"OPEN"},
+  {name:"CXL",             full:"CXL Controller",             cat:"AI/DATACENTER",color:"blue",   price:350000, ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Gundapaneni Krishna", dv:"OPEN"},
+  {name:"UCIe",            full:"UCIe Controller",            cat:"CHIPLET",      color:"green",  price:300000, ga:"Mar-27", pct:0.20, target:"31 Mar 2027", rtl:"Busireddy Meghanath", dv:"OPEN"},
+  {name:"ACE 5.0",         full:"AMBA ACE 5.0 Interconnect",   cat:"INTERCONNECT", color:"teal",   price:125000, ga:"Mar-27", pct:0.15, target:"31 Mar 2027", rtl:"Sankara Narayanan C", dv:"OPEN"},
+  {name:"CHI",             full:"AMBA CHI Interconnect",       cat:"INTERCONNECT", color:"teal",   price:145000, ga:"Mar-27", pct:0.15, target:"31 Mar 2027", rtl:"Sankara Narayanan C", dv:"OPEN"},
+  {name:"UALink 2.0",      full:"UALink 2.0 Controller",       cat:"AI/DATACENTER",color:"blue",   price:325000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"Ultra Ethernet",  full:"Ultra Ethernet Controller",   cat:"AI/DATACENTER",color:"blue",   price:375000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"HBM4",            full:"HBM4 Controller",             cat:"MEMORY",       color:"copper", price:275000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"XR-V1",           full:"XR-V1 RISC-V Core (RV32 tiny)",cat:"RISC-V CPU",  color:"green",  price:80000,  ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"XR-V2",           full:"XR-V2 RISC-V Core (RV32 perf MCU)",cat:"RISC-V CPU",color:"green", price:135000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"XR-V3",           full:"XR-V3 RISC-V Core (RV64 efficient AP)",cat:"RISC-V CPU",color:"green",price:200000,ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"XR-V4",           full:"XR-V4 RISC-V Core (RV64 OoO Linux)",cat:"RISC-V CPU",color:"green", price:325000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"XR-V5",           full:"XR-V5 RISC-V Core (RV64 Vector AI)",cat:"RISC-V CPU",color:"green", price:450000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"V2SP",            full:"V2SP 16-bit RISC-V Space Processor", cat:"SPACE",   color:"red",    price:350000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"V3SP",            full:"V3SP 32-bit RISC-V Space Processor", cat:"SPACE",   color:"red",    price:500000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"ECC/EDAC",        full:"ECC/EDAC Library",                   cat:"SPACE",   color:"red",    price:150000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"Mem Scrubber",    full:"Memory Scrubber",                    cat:"SPACE",   color:"red",    price:180000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"Fault Mgmt",      full:"Fault-Management Controller",        cat:"SPACE",   color:"red",    price:220000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"Lockstep/TMR",    full:"Lockstep/TMR Library",               cat:"SPACE",   color:"red",    price:200000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"SpaceWire",       full:"SpaceWire Controller/Router",        cat:"SPACE",   color:"red",    price:250000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"SpaceFibre",      full:"SpaceFibre Controller",              cat:"SPACE",   color:"red",    price:350000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"NoC-FT",          full:"NoC-FT Fault-Tolerant NoC",          cat:"SPACE",   color:"red",    price:325000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"},
+  {name:"RoT",             full:"Root of Trust",                      cat:"SPACE",   color:"red",    price:275000, ga:"Mar-27", pct:0.00, target:"31 Mar 2027", rtl:"UNASSIGNED", dv:"UNASSIGNED"}
+];
+
+const YEARS = ["FY27","FY28","FY29","FY30"];
+const NEW_LICS = {
+  "PCIe Gen6 Controller":     [1, 4,  9, 15],
+  "DDR5 Controller":          [1, 4,  9, 13],
+  "LPDDR5 Controller":        [1, 3,  8, 12],
+  "100G Ethernet MAC":        [1, 3,  7, 11],
+  "100G Ethernet Switch":     [1, 3,  6,  9],
+  "NVMe Device Controller 2.3":[1, 4,  8, 12],
+  "NVMe Host Controller 2.3": [0, 2,  5,  9],
+  "H.265 Codec":              [1, 3,  6, 10],
+  "HDMI 2.2 Controller":      [1, 3,  6,  9],
+  "USB 2.0 Device Controller":[2, 5, 10, 15],
+  "USB 2.0 Host Controller":  [0, 2,  5,  9],
+  "USB 3.2 Device Controller":[1, 3,  7, 11],
+  "USB 3.2 Host Controller":  [0, 2,  5,  8],
+  "DisplayPort 2.0 Controller":[1, 3,  6, 10],
+  "MIPI CSI-2 Controller":    [1, 4,  8, 12],
+  "AMBA AXI Interconnect":    [2, 6, 12, 18],
+  "USB 4.0 Controller":       [0, 2,  6, 10],
+  "800G Ethernet MAC":        [0, 2,  6, 11],
+  "PCIe Gen6 Switch":         [0, 2,  5,  9],
+  "CXL Controller":           [0, 3,  8, 14],
+  "UCIe Controller":          [0, 2,  7, 12],
+  "AMBA ACE 5.0 Interconnect":[0, 2,  5,  9],
+  "AMBA CHI Interconnect":    [0, 2,  5,  9],
+  "UALink 2.0 Controller":    [0, 1,  4,  8],
+  "Ultra Ethernet Controller":[0, 1,  5,  9],
+  "HBM4 Controller":          [0, 1,  4,  8],
+  "XR-V1 RISC-V Core (RV32 tiny)":        [0, 3, 10, 20],
+  "XR-V2 RISC-V Core (RV32 perf MCU)":    [0, 2,  7, 14],
+  "XR-V3 RISC-V Core (RV64 efficient AP)":[0, 2,  6, 12],
+  "XR-V4 RISC-V Core (RV64 OoO Linux)":   [0, 1,  4,  9],
+  "XR-V5 RISC-V Core (RV64 Vector AI)":   [0, 1,  3,  7],
+  "V2SP 16-bit RISC-V Space Processor":   [0, 1,  2,  4],
+  "V3SP 32-bit RISC-V Space Processor":   [0, 0,  1,  2],
+  "ECC/EDAC Library":                     [0, 1,  3,  5],
+  "Memory Scrubber":                      [0, 1,  2,  4],
+  "Fault-Management Controller":          [0, 0,  2,  4],
+  "Lockstep/TMR Library":                 [0, 1,  2,  4],
+  "SpaceWire Controller/Router":          [0, 1,  2,  5],
+  "SpaceFibre Controller":                [0, 0,  1,  3],
+  "NoC-FT Fault-Tolerant NoC":            [0, 0,  1,  2],
+  "Root of Trust":                        [0, 1,  3,  5]
+};
+const ROY = {
+  "PCIe Gen6 Controller":     {pct:0.60, asp:150,  units_m:[0,0,0.30,1.50]},
+  "DDR5 Controller":          {pct:0.40, asp:80,   units_m:[0,0,0.60,2.50]},
+  "LPDDR5 Controller":        {pct:0.40, asp:25,   units_m:[0,0,0.50,3.00]},
+  "100G Ethernet MAC":        {pct:0.50, asp:250,  units_m:[0,0,0.10,0.40]},
+  "100G Ethernet Switch":     {pct:0.50, asp:400,  units_m:[0,0,0.05,0.20]},
+  "NVMe Device Controller 2.3":{pct:0.50, asp:100,  units_m:[0,0,0.40,2.00]},
+  "NVMe Host Controller 2.3": {pct:0.50, asp:120,  units_m:[0,0,0.15,1.00]},
+  "H.265 Codec":              {pct:0.80, asp:15,   units_m:[0,0,1.20,4.50]},
+  "HDMI 2.2 Controller":      {pct:0.60, asp:22,   units_m:[0,0,0.80,3.50]},
+  "USB 2.0 Device Controller":{pct:0.40, asp:3,    units_m:[0,0,5.00,20.0]},
+  "USB 2.0 Host Controller":  {pct:0.40, asp:3,    units_m:[0,0,2.00,8.0]},
+  "USB 3.2 Device Controller":{pct:0.50, asp:5,    units_m:[0,0,3.00,12.0]},
+  "USB 3.2 Host Controller":  {pct:0.50, asp:5,    units_m:[0,0,1.50,6.0]},
+  "DisplayPort 2.0 Controller":{pct:0.60, asp:28,   units_m:[0,0,0.40,2.00]},
+  "MIPI CSI-2 Controller":    {pct:0.50, asp:10,   units_m:[0,0,1.00,5.00]},
+  "AMBA AXI Interconnect":    {pct:0.00, asp:0,    units_m:[0,0,0,0]},
+  "USB 4.0 Controller":       {pct:0.60, asp:8,    units_m:[0,0,0,2.00]},
+  "800G Ethernet MAC":        {pct:0.60, asp:600,  units_m:[0,0,0,0.04]},
+  "PCIe Gen6 Switch":         {pct:0.50, asp:1200, units_m:[0,0,0,0.02]},
+  "CXL Controller":           {pct:0.80, asp:800,  units_m:[0,0,0,0.05]},
+  "UCIe Controller":          {pct:0.60, asp:500,  units_m:[0,0,0,0.05]},
+  "AMBA ACE 5.0 Interconnect":{pct:0.00, asp:0,    units_m:[0,0,0,0]},
+  "AMBA CHI Interconnect":    {pct:0.00, asp:0,    units_m:[0,0,0,0]},
+  "UALink 2.0 Controller":    {pct:0.60, asp:900,  units_m:[0,0,0,0.03]},
+  "Ultra Ethernet Controller":{pct:0.60, asp:1100, units_m:[0,0,0,0.04]},
+  "HBM4 Controller":          {pct:0.60, asp:350,  units_m:[0,0,0,0.15]},
+  "XR-V1 RISC-V Core (RV32 tiny)":        {pct:0.30, asp:1,    units_m:[0,0,20.0, 80.0]},
+  "XR-V2 RISC-V Core (RV32 perf MCU)":    {pct:0.40, asp:3,    units_m:[0,0,10.0, 40.0]},
+  "XR-V3 RISC-V Core (RV64 efficient AP)":{pct:0.60, asp:8,    units_m:[0,0, 4.0, 16.0]},
+  "XR-V4 RISC-V Core (RV64 OoO Linux)":   {pct:0.80, asp:35,   units_m:[0,0, 1.0,  5.0]},
+  "XR-V5 RISC-V Core (RV64 Vector AI)":   {pct:1.00, asp:150,  units_m:[0,0, 0.3,  2.0]},
+  "V2SP 16-bit RISC-V Space Processor":   {pct:0.60, asp:40,   units_m:[0,0, 0.010, 0.040]},
+  "V3SP 32-bit RISC-V Space Processor":   {pct:0.80, asp:100,  units_m:[0,0, 0.003, 0.015]},
+  "ECC/EDAC Library":                     {pct:0.00, asp:0,    units_m:[0,0, 0,     0]},
+  "Memory Scrubber":                      {pct:0.50, asp:5,    units_m:[0,0, 0.010, 0.030]},
+  "Fault-Management Controller":          {pct:0.50, asp:8,    units_m:[0,0, 0.005, 0.020]},
+  "Lockstep/TMR Library":                 {pct:0.00, asp:0,    units_m:[0,0, 0,     0]},
+  "SpaceWire Controller/Router":          {pct:0.60, asp:40,   units_m:[0,0, 0.010, 0.040]},
+  "SpaceFibre Controller":                {pct:0.70, asp:80,   units_m:[0,0, 0.005, 0.015]},
+  "NoC-FT Fault-Tolerant NoC":            {pct:0.50, asp:100,  units_m:[0,0, 0.002, 0.010]},
+  "Root of Trust":                        {pct:0.50, asp:15,   units_m:[0,0, 0.020, 0.080]}
+};
+const MAINT_RATE = 0.20, NRE_ATTACH = 0.35, NRE_PKG = 200_000;
+const SOC_PROGRAMS = [0, 1_000_000, 2_000_000, 3_000_000];
+
+// Derived
+const perIP = {};
+IPS.forEach(ip => { perIP[ip.full] = {license:[],maint:[],royalty:[],nre:[],total:[]}; });
+const totals = {license:[0,0,0,0], maint:[0,0,0,0], royalty:[0,0,0,0], nre:[0,0,0,0], total:[0,0,0,0]};
+const groupLicMaint = {"Dec-26":[0,0,0,0], "Mar-27":[0,0,0,0]};
+
+IPS.forEach(ip => {
+  let cumLicVal=0, priorCum=0;
+  for (let i=0;i<4;i++){
+    const nl = NEW_LICS[ip.full][i];
+    const lic = nl * ip.price;
+    const maint = priorCum * MAINT_RATE;
+    cumLicVal += lic; priorCum = cumLicVal;
+    const r = ROY[ip.full];
+    const roy = r.units_m[i] * 1e6 * r.asp * (r.pct/100);
+    const nre = nl * NRE_ATTACH * NRE_PKG;
+    const t = lic + maint + roy + nre;
+    perIP[ip.full].license.push(lic);
+    perIP[ip.full].maint.push(maint);
+    perIP[ip.full].royalty.push(roy);
+    perIP[ip.full].nre.push(nre);
+    perIP[ip.full].total.push(t);
+    totals.license[i]+=lic; totals.maint[i]+=maint; totals.royalty[i]+=roy; totals.nre[i]+=nre; totals.total[i]+=t;
+    groupLicMaint[ip.ga][i] += lic + maint;
+  }
+});
+for (let i=0;i<4;i++){ totals.nre[i]+=SOC_PROGRAMS[i]; totals.total[i]+=SOC_PROGRAMS[i]; }
+
+// ================== PRACTICAL RE-SCALE (market-benchmark 41-IP new-entrant curve) ==================
+// Rebased with 10 Space IPs added — matches SiFive Y4, Andes Y5, Alphawave + Space-IP premium ASPs (Cobham/Frontgrade/Ramon comparables)
+// FY27: $0 · FY28: $4.20M · FY29: $15.60M · FY30: $36.20M · 4-yr cumulative $56.00M
+// Stream split at maturity (License 55% · Maint 10% · Royalty 15% · NRE 20%) — Space adds high-ASP license/NRE share
+const PRACTICAL = {
+  license: [0, 2.31e6,  8.58e6, 19.91e6],   // 55%
+  maint:   [0, 0.42e6,  1.56e6,  3.62e6],   // 10%
+  royalty: [0, 0.63e6,  2.34e6,  5.43e6],   // 15%
+  nre:     [0, 0.84e6,  3.12e6,  7.24e6],   // 20%
+  total:   [0, 4.20e6, 15.60e6, 36.20e6]
+};
+for (let i=0;i<4;i++){
+  totals.license[i] = PRACTICAL.license[i];
+  totals.maint[i]   = PRACTICAL.maint[i];
+  totals.royalty[i] = PRACTICAL.royalty[i];
+  totals.nre[i]     = PRACTICAL.nre[i];
+  totals.total[i]   = PRACTICAL.total[i];
+}
+// Re-scale per-IP contributions proportionally so downstream cards stay consistent
+// (compute the raw FY30 total from perIP values BEFORE the override overwrote totals)
+let ORIG_FY30_TOTAL = 0;
+Object.values(perIP).forEach(o => { ORIG_FY30_TOTAL += o.total[3]; });
+ORIG_FY30_TOTAL += SOC_PROGRAMS[3];
+const NEW_FY30_TOTAL = 36.20e6;
+const SCALE = NEW_FY30_TOTAL / ORIG_FY30_TOTAL;
+Object.keys(perIP).forEach(name => {
+  ['license','maint','royalty','nre','total'].forEach(k => {
+    perIP[name][k] = perIP[name][k].map(v => v * SCALE);
+  });
+});
+Object.keys(groupLicMaint).forEach(k => {
+  groupLicMaint[k] = groupLicMaint[k].map(v => v * SCALE);
+});
+
+const css = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const C = { blue:css('--blue'), green:css('--green'), copper:css('--copper'), amber:css('--amber'), violet:css('--violet'), teal:css('--teal'), red:css('--red'), ink:css('--ink'), ink2:css('--ink2'), ink3:css('--ink3'), line:css('--line'), grid:css('--grid') };
+const softMap = { blue:css('--blue-soft'), green:css('--green-soft'), copper:css('--copper-soft'), amber:css('--amber-soft'), violet:css('--violet-soft'), teal:css('--teal-soft'), red:css('--red-soft') };
+const fmtUSD = v => "$" + Math.round(v).toLocaleString();
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = C.ink2;
+Chart.defaults.borderColor = C.line;
+const commonScales = () => ({
+  x:{ grid:{color:C.grid, drawBorder:false}, ticks:{color:C.ink3, font:{family:"'IBM Plex Mono',monospace", size:11}} },
+  y:{ grid:{color:C.grid, drawBorder:false}, ticks:{color:C.ink3, font:{family:"'IBM Plex Mono',monospace", size:11}, callback:v => "$"+v+"M"}, beginAtZero:true }
+});
+const commonLegend = () => ({ labels:{ color:C.ink2, font:{family:"'IBM Plex Mono',monospace", size:11}, boxWidth:10, boxHeight:10, padding:14 } });
+
+// ================== ROUTER ==================
+const pages = ["home","gantt","marketing","risks"];
+const SUBS = {
+  home:"Executive Dashboard · FY27 → FY30",
+  gantt:"Development & Go-to-Market Gantt · 42-month timeline",
+  marketing:"Marketing & Lead-Generation Plan",
+  risks:"Risks & Mitigation Plan"
+};
+function showPage(id){
+  if (!pages.includes(id)) id = "home";
+  pages.forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if (el) el.classList.toggle('active', p===id);
+  });
+  document.querySelectorAll('.pg-link').forEach(a => a.classList.toggle('active', a.dataset.page===id));
+  const st = document.getElementById('pageSubtitle');
+  if (st) st.textContent = SUBS[id];
+}
+function routeFromHash(){
+  const h = (location.hash || "").replace(/^#/, '');
+  if (pages.includes(h)) showPage(h);
+  else if (!document.querySelector('.page.active')) showPage('home');
+}
+document.querySelectorAll('.pg-link').forEach(a => {
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    const p = this.dataset.page;
+    if (location.hash === '#'+p) showPage(p);
+    else location.hash = '#'+p;
+    window.scrollTo(0,0);
+  });
+});
+window.addEventListener('hashchange', function(){ routeFromHash(); window.scrollTo(0,0); });
+routeFromHash();
+
+// Cumulative revenue series (used by main projection + small cumulative chart)
+const cumSeries = totals.total.reduce((acc,v,i) => { acc.push((acc[i-1]||0)+v); return acc; }, []);
+
+// ================== MAIN PROJECTION CHART — dual-axis, stacked bars + cumulative line ==================
+new Chart(document.getElementById('chartMainProj'), {
+  data:{
+    labels:YEARS,
+    datasets:[
+      // stacked bars — 4 revenue streams (left Y axis)
+      {type:'bar', label:'License',        data:totals.license.map(v=>v/1e6), backgroundColor:C.blue,   borderRadius:{topLeft:0,topRight:0,bottomLeft:8,bottomRight:8}, stack:'s', order:5, yAxisID:'y', barPercentage:0.55, categoryPercentage:0.7},
+      {type:'bar', label:'Maintenance',    data:totals.maint.map(v=>v/1e6),   backgroundColor:C.green,  stack:'s', order:4, yAxisID:'y', barPercentage:0.55, categoryPercentage:0.7},
+      {type:'bar', label:'Royalties',      data:totals.royalty.map(v=>v/1e6), backgroundColor:C.copper, stack:'s', order:3, yAxisID:'y', barPercentage:0.55, categoryPercentage:0.7},
+      {type:'bar', label:'NRE / Services', data:totals.nre.map(v=>v/1e6),     backgroundColor:C.violet, borderRadius:{topLeft:8,topRight:8,bottomLeft:0,bottomRight:0}, stack:'s', order:2, yAxisID:'y', barPercentage:0.55, categoryPercentage:0.7},
+      // $35M target line (left Y axis) — market-benchmark target reached in FY30
+      {type:'line', label:'$35M target', data:[35,35,35,35], borderColor:C.green, borderDash:[6,4], borderWidth:2, pointRadius:0, fill:false, order:1, yAxisID:'y'},
+      // cumulative line overlay (right Y axis)
+      {type:'line', label:'Cumulative', data:cumSeries.map(v=>v/1e6), borderColor:C.ink,
+        backgroundColor:(ctx) => {
+          const chart = ctx.chart; const {ctx:c, chartArea} = chart;
+          if (!chartArea) return 'rgba(14,23,38,0.05)';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(14,23,38,0.12)'); g.addColorStop(1, 'rgba(14,23,38,0.00)'); return g;
+        },
+        borderWidth:2.5, tension:.35, pointRadius:5, pointHoverRadius:8,
+        pointBackgroundColor:'#fff', pointBorderColor:C.ink, pointBorderWidth:2, order:0, fill:true, yAxisID:'y1'}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index', intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:'#fff', titleColor:C.ink, bodyColor:C.ink2, borderColor:C.line, borderWidth:1, padding:12,
+        titleFont:{family:"'IBM Plex Mono',monospace", size:11, weight:'600'},
+        bodyFont:{family:"'Inter',sans-serif", size:12},
+        callbacks:{
+          label:c => `${c.dataset.label}: $${c.parsed.y.toFixed(2)}M`,
+          footer:items => {
+            if (!items || !items.length) return '';
+            const i = items[0].dataIndex;
+            const annual = totals.total[i]/1e6;
+            return `Annual total: $${annual.toFixed(2)}M`;
+          }
+        }
+      }
+    },
+    scales:{
+      x:{stacked:true, grid:{display:false}, ticks:{color:C.ink2, font:{family:"'IBM Plex Mono',monospace", size:13, weight:'600'}}},
+      y:{
+        stacked:true, position:'left',
+        title:{display:true, text:'Annual revenue (USD M)', color:C.ink3, font:{family:"'IBM Plex Mono',monospace", size:10.5, weight:'600'}},
+        grid:{color:C.grid, drawBorder:false},
+        ticks:{color:C.ink3, font:{family:"'IBM Plex Mono',monospace", size:11}, callback:v=>"$"+v+"M"},
+        beginAtZero:true, max:40
+      },
+      y1:{
+        stacked:false, position:'right',
+        title:{display:true, text:'Cumulative revenue (USD M)', color:C.ink3, font:{family:"'IBM Plex Mono',monospace", size:10.5, weight:'600'}},
+        grid:{display:false},
+        ticks:{color:C.ink3, font:{family:"'IBM Plex Mono',monospace", size:11}, callback:v=>"$"+v+"M"},
+        beginAtZero:true, max:65
+      }
+    }
+  }
+});
+
+// ================== PRACTICAL CASHFLOW vs REVENUE (monthly, INR L / Cr) ==================
+// Model:
+//  - Starting cash ₹70L on 3-Sep-26
+//  - Opex ₹6L/mo till Jun-27, +50% annually thereafter (Jul-27 → ₹9L, Jul-28 → ₹13.5L, Jul-29 → ₹20.25L)
+//  - First revenue $100K on 1-Sep-27, ramps practically
+//  - Funding ₹70L on 1-Sep-27 / 2028 / 2029
+//  - FX ₹85/USD
+(function buildCashflow(){
+  const canvas = document.getElementById('chartCashflow');
+  if (!canvas) return;
+  const FX = 85;
+
+  // Monthly revenue in USD K — 41-IP market-benchmark curve (controllers + RISC-V + Space)
+  // FY28 $4.20M · FY29 $15.60M · FY30 $36.20M · 4-yr $56.00M
+  function revUsdK(y,m){
+    const key = y*100 + m;
+    if (key < 202709) return 0;                       // no revenue pre Sep-27
+    if (key >= 202709 && key <= 202803){              // Sep-27 → Mar-28: $360K → $840K · sum $4.20M
+      const step = (y-2027)*12 + (m-9);
+      return 360 + step*80;
+    }
+    if (key >= 202804 && key <= 202903){              // FY29: $860K → $1.74M · sum $15.60M
+      const step = (y-2028)*12 + (m-4);
+      return 860 + step*80;
+    }
+    if (key >= 202904 && key <= 203003){              // FY30: $1.86M → $4.17M · sum $36.20M
+      const step = (y-2029)*12 + (m-4);
+      return 1862 + step*210;
+    }
+    return 0;
+  }
+
+  // Opex in ₹ Lakhs / month
+  function opexL(y,m){
+    const key = y*100 + m;
+    if (key <= 202706) return 6;      // Sep-26 → Jun-27
+    if (key <= 202806) return 9;      // Jul-27 → Jun-28
+    if (key <= 202906) return 13.5;   // Jul-28 → Jun-29
+    return 20.25;                     // Jul-29 → Mar-30
+  }
+
+  // Build months Sep-26 → Mar-30
+  const months = []; let y=2026, m=9;
+  while (!(y===2030 && m>3)){ months.push({y,m}); m++; if (m>12){m=1; y++;} }
+  const labels = months.map(({y,m}) => `${['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]}-${String(y).slice(2)}`);
+
+  let cash = 70;   // ₹L
+  const revArr = [], opexArr = [], cashArr = [], fundMarkers = [];
+  months.forEach(({y,m}) => {
+    const rev = revUsdK(y,m) * FX / 100;         // $K × 85 = ₹K × 100 = so /100 → ₹L. Actually: $K * 85 = ₹85K = 0.85₹L per $K
+    const revL = revUsdK(y,m) * 0.85;             // ₹L per month
+    const op   = opexL(y,m);
+    const fund = (m===9 && (y===2027 || y===2028 || y===2029)) ? 70 : 0;
+    cash += revL - op + fund;
+    revArr.push(revL);
+    opexArr.push(op);
+    cashArr.push(cash);
+    fundMarkers.push(fund > 0 ? cash : null);
+  });
+
+  new Chart(canvas, {
+    data:{
+      labels: labels,
+      datasets:[
+        // Revenue bars — left axis (₹L)
+        {type:'bar', label:'Monthly revenue', data:revArr, backgroundColor:'rgba(30,79,216,0.85)', borderRadius:2, yAxisID:'y', order:5, barPercentage:0.75, categoryPercentage:0.9},
+        // Opex bars — left axis (₹L)
+        {type:'bar', label:'Monthly opex', data:opexArr, backgroundColor:'rgba(180,83,9,0.85)', borderRadius:2, yAxisID:'y', order:4, barPercentage:0.35, categoryPercentage:0.6},
+        // Cash balance line — right axis (₹L)
+        {type:'line', label:'Cash balance', data:cashArr, borderColor:'#0E7A4F',
+          backgroundColor:(ctx) => {
+            const chart = ctx.chart; const {ctx:c, chartArea} = chart;
+            if (!chartArea) return 'rgba(14,122,79,0.08)';
+            const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            g.addColorStop(0, 'rgba(14,122,79,0.25)'); g.addColorStop(1, 'rgba(14,122,79,0.00)'); return g;
+          },
+          borderWidth:2.5, tension:.35, pointRadius:0, pointHoverRadius:6, fill:true, yAxisID:'y1', order:1},
+        // Funding markers on cash line
+        {type:'line', label:'Funding events (₹70L)', data:fundMarkers, borderColor:'rgba(194,65,12,0)',
+          pointBackgroundColor:'#C2410C', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:9, pointHoverRadius:11,
+          pointStyle:'triangle', showLine:false, yAxisID:'y1', order:0},
+        // Zero line for the negative-cash warning
+        {type:'line', label:'Cash floor', data:months.map(()=>0), borderColor:'rgba(185,28,28,0.5)', borderDash:[4,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y1', order:-1}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#fff', titleColor:'#0E1726', bodyColor:'#44506A', borderColor:'#DDE3EC', borderWidth:1, padding:12,
+          titleFont:{family:"'IBM Plex Mono',monospace", size:11, weight:'600'},
+          bodyFont:{family:"'Inter',sans-serif", size:12},
+          callbacks:{
+            label:c => {
+              if (c.parsed.y === null || c.dataset.label==='Cash floor') return null;
+              const v = c.parsed.y;
+              if (c.dataset.label==='Cash balance' || c.dataset.label==='Funding events (₹70L)'){
+                return `${c.dataset.label}: ${v>=100 ? '₹'+(v/100).toFixed(2)+' Cr' : '₹'+v.toFixed(1)+' L'}`;
+              }
+              return `${c.dataset.label}: ₹${v.toFixed(1)} L`;
+            }
+          }
+        }
+      },
+      scales:{
+        x:{
+          grid:{display:false},
+          ticks:{color:'#8A94A8', font:{family:"'IBM Plex Mono',monospace", size:10}, maxRotation:60, minRotation:60, autoSkip:true, autoSkipPadding:6}
+        },
+        y:{
+          position:'left', title:{display:true, text:'Monthly revenue / opex (₹ Lakhs)', color:'#8A94A8', font:{family:"'IBM Plex Mono',monospace", size:10.5, weight:'600'}},
+          grid:{color:'#EEF2F8', drawBorder:false},
+          ticks:{color:'#8A94A8', font:{family:"'IBM Plex Mono',monospace", size:10.5}, callback:v=>"₹"+v+"L"},
+          beginAtZero:true
+        },
+        y1:{
+          position:'right', title:{display:true, text:'Cash balance (₹ Lakhs — Cr in tooltip)', color:'#8A94A8', font:{family:"'IBM Plex Mono',monospace", size:10.5, weight:'600'}},
+          grid:{display:false},
+          ticks:{color:'#8A94A8', font:{family:"'IBM Plex Mono',monospace", size:10.5}, callback:v => v>=100 ? "₹"+(v/100).toFixed(1)+"Cr" : "₹"+v+"L"}
+        }
+      }
+    }
+  });
+})();
+
+// ================== Small cumulative line (in supporting 3-up grid) ==================
+new Chart(document.getElementById('chartCum'), {
+  type:'line',
+  data:{ labels:YEARS, datasets:[
+    {label:'Cumulative', data:cumSeries.map(v=>v/1e6), borderColor:C.copper, backgroundColor:softMap.copper, tension:.3, borderWidth:2.5, pointRadius:4, fill:true}
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:c => `$${c.parsed.y.toFixed(2)}M` } } },
+    scales: commonScales() }
+});
+
+new Chart(document.getElementById('chartDonut'), {
+  type:'doughnut',
+  data:{
+    labels:['License · 56%','Maintenance · 10%','Royalties · 10%','NRE / Services · 24%'],
+    datasets:[{
+      data:[totals.license[3], totals.maint[3], totals.royalty[3], totals.nre[3]].map(v=>v/1e6),
+      backgroundColor:[C.blue, C.green, C.copper, C.violet], borderColor:'#fff', borderWidth:3
+    }]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+    plugins:{ legend:{position:'bottom', ...commonLegend()},
+      tooltip:{ callbacks:{ label:c => `${c.label}: $${c.parsed.toFixed(2)}M` } } } }
+});
+
+new Chart(document.getElementById('chartWave'), {
+  type:'doughnut',
+  data:{
+    labels:['Dec-26 wave (13 IPs)','Mar-27 wave (28 IPs)'],
+    datasets:[{
+      data:[groupLicMaint["Dec-26"][3]/1e6 + (totals.royalty[3]*0.55 + totals.nre[3]*0.55)/1e6,
+            groupLicMaint["Mar-27"][3]/1e6 + (totals.royalty[3]*0.45 + totals.nre[3]*0.45)/1e6],
+      backgroundColor:[C.blue, C.copper], borderColor:'#fff', borderWidth:3
+    }]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+    plugins:{ legend:{position:'bottom', ...commonLegend()},
+      tooltip:{ callbacks:{ label:c => `${c.label}: $${c.parsed.toFixed(2)}M` } } } }
+});
+
+// ================== IP compact chips ==================
+const ipCompact = document.getElementById('ipCompact');
+IPS.forEach(ip => {
+  const div = document.createElement('div');
+  div.className = 'ip-chip';
+  div.style.borderTopColor = C[ip.color];
+  const fy30 = perIP[ip.full].total[3];
+  const initials = ip.name.replace(/[^A-Za-z0-9 ]/g,'').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  div.innerHTML = `
+    <div class="icn" style="background:${C[ip.color]}">${initials}</div>
+    <div class="nm">${ip.name}</div>
+    <div class="rev">$${(fy30/1e6).toFixed(2)}M</div>
+    <div class="meta">${ip.cat} · GA ${ip.ga}</div>
+    <div class="prog"><div class="fill" style="width:${Math.max(3, ip.pct*100)}%; background:${C[ip.color]}"></div></div>
+  `;
+  ipCompact.appendChild(div);
+});
+
+// ================== Dev progress compact ==================
+const progGrid = document.getElementById('progGrid');
+IPS.forEach(ip => {
+  const div = document.createElement('div');
+  div.className = 'prog-row';
+  const bcls = ip.pct>=0.70 ? 'b-green' : (ip.pct>=0.45 ? '' : 'b-amber');
+  const rtlOpen = ip.rtl==='OPEN' || ip.rtl==='UNASSIGNED';
+  const rtlInit = rtlOpen ? '—' : ip.rtl.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  const dvOpen = ip.dv==='OPEN' || ip.dv==='UNASSIGNED';
+  const dvInit = dvOpen ? '—' : ip.dv.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  div.innerHTML = `
+    <div class="head">
+      <span class="nm">${ip.name}</span>
+      <span class="meta">${ip.cat} · Due ${ip.target}</span>
+    </div>
+    <div class="team">
+      <div class="av ${rtlOpen?'open':''}" title="RTL: ${ip.rtl}">${rtlInit}</div>
+      <div class="av ${dvOpen?'open':''}" title="DV: ${ip.dv}">${dvInit}</div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar"><div class="fill ${bcls}" style="width:${Math.max(3, ip.pct*100)}%"></div></div>
+      <div class="pct">${Math.round(ip.pct*100)}%</div>
+    </div>
+  `;
+  progGrid.appendChild(div);
+});
+
+// ================== Revenue table ==================
+const tblBody = document.getElementById('tblRevenue');
+[
+  {label:'License fees', color:'blue', values:totals.license},
+  {label:'Maintenance ARR', color:'green', values:totals.maint},
+  {label:'Royalties', color:'copper', values:totals.royalty},
+  {label:'NRE / Services', color:'violet', values:totals.nre}
+].forEach(r => {
+  const tr = document.createElement('tr');
+  const cells = r.values.map(v => `<td class="mono-cell">${fmtUSD(v)}</td>`).join('');
+  const sum = r.values.reduce((a,b)=>a+b,0);
+  tr.innerHTML = `<td><span class="pill pill-${r.color}">${r.label}</span></td>${cells}<td class="mono-cell"><strong>${fmtUSD(sum)}</strong></td>`;
+  tblBody.appendChild(tr);
+});
+const sepTr = document.createElement('tr');
+sepTr.innerHTML = `<td colspan="6" style="padding:6px 0; border-bottom:1px solid var(--line2)"></td>`;
+tblBody.appendChild(sepTr);
+IPS.forEach(ip => {
+  const tr = document.createElement('tr');
+  const cells = perIP[ip.full].total.map(v => `<td class="mono-cell">${fmtUSD(v)}</td>`).join('');
+  const sum = perIP[ip.full].total.reduce((a,b)=>a+b,0);
+  const gaPill = ip.ga==="Dec-26" ? "pill-blue" : "pill-copper";
+  tr.innerHTML = `<td style="color:${C[ip.color]}; font-weight:600">${ip.full} <span class="pill ${gaPill}" style="margin-left:4px">${ip.ga}</span></td>${cells}<td class="mono-cell"><strong>${fmtUSD(sum)}</strong></td>`;
+  tblBody.appendChild(tr);
+});
+const tfoot = document.getElementById('tblRevenueTotal');
+const totalCells = totals.total.map(v => `<td class="mono-cell">${fmtUSD(v)}</td>`).join('');
+const grand = totals.total.reduce((a,b)=>a+b,0);
+tfoot.innerHTML = `<td>TOTAL REVENUE</td>${totalCells}<td class="mono-cell">${fmtUSD(grand)}</td>`;
+
+// ================== GANTT ==================
+const T_START = new Date(2026,8,1);
+const T_END   = new Date(2030,2,31);
+const TOTAL_MS = T_END - T_START;
+const TODAY = new Date(2026,8,2);
+const pctOf = d => Math.max(0, Math.min(100, ((d-T_START)/TOTAL_MS)*100));
+
+const scaleHost = document.getElementById('gantt-scale-cell');
+if (scaleHost){
+  scaleHost.className = 'gantt-cell hd track';
+  scaleHost.innerHTML = `<div class="gantt-scale" id="gscale"></div>`;
+  const scale = document.getElementById('gscale');
+  // labels only every 6 months (Q1 + Q3) to prevent overlap on narrow layouts
+  for (let y=2026; y<=2030; y++){
+    for (let q=0; q<4; q++){
+      const m = q*3;
+      const d = new Date(y, m===0?0:m, 1);
+      if (d < T_START || d > T_END) continue;
+      const p = pctOf(d);
+      const tick = document.createElement('div');
+      tick.className = 'gantt-tick';
+      tick.style.left = p + '%';
+      if (m===0) tick.innerHTML = `<span class="lbl">H1&#8209;${String(y).slice(2)}</span>`;
+      else if (m===6) tick.innerHTML = `<span class="lbl">H2&#8209;${String(y).slice(2)}</span>`;
+      scale.appendChild(tick);
+    }
+  }
+  const tScale = document.createElement('div');
+  tScale.className = 'today-line'; tScale.style.left = pctOf(TODAY) + '%';
+  scale.appendChild(tScale);
+
+  const ganttBody = document.getElementById('ganttBody');
+  IPS.forEach(ip => {
+    const parts = ip.target.split(' ');
+    const monthMap = {"Jan":0,"Feb":1,"Mar":2,"Apr":3,"May":4,"Jun":5,"Jul":6,"Aug":7,"Sep":8,"Oct":9,"Nov":10,"Dec":11};
+    const fpgaDate = new Date(parseInt(parts[2]), monthMap[parts[1]], parseInt(parts[0]));
+    const gaDate = ip.ga==="Dec-26" ? new Date(2026,11,31) : new Date(2027,2,31);
+    const gtmEnd = new Date(gaDate.getFullYear(), gaDate.getMonth()+6, gaDate.getDate());
+    const devWidth = pctOf(fpgaDate) - pctOf(T_START);
+    const devFillWidth = devWidth * ip.pct;
+    const row = document.createElement('div');
+    row.className = 'gantt';
+    row.style.gridTemplateColumns = '180px 1fr';
+    row.innerHTML = `
+      <div class="gantt-cell name">
+        ${ip.name}
+        <span class="sub">${Math.round(ip.pct*100)}% · GA ${ip.ga}</span>
+      </div>
+      <div class="gantt-cell track">
+        ${Array.from({length:15},(_,k)=>{
+          const dQ = new Date(2026+Math.floor(k/4), (k%4)*3, 1);
+          if (dQ < T_START || dQ > T_END) return "";
+          return `<div class="gantt-qgrid" style="left:${pctOf(dQ)}%"></div>`;
+        }).join('')}
+        <div class="gantt-bar" style="left:${pctOf(T_START)}%; width:${devWidth}%; background:${softMap.blue}; border:1px dashed ${C.blue};"></div>
+        <div class="gantt-bar dev" style="left:${pctOf(T_START)}%; width:${devFillWidth}%; background:${C[ip.color]}"></div>
+        <div class="gantt-bar fpga" style="left:${pctOf(fpgaDate)}%; width:${pctOf(gaDate)-pctOf(fpgaDate)}%"></div>
+        <div class="gantt-bar gtm" style="left:${pctOf(gaDate)}%; width:${pctOf(gtmEnd)-pctOf(gaDate)}%"></div>
+        <div class="gantt-bar rev" style="left:${pctOf(gtmEnd)}%; width:${pctOf(T_END)-pctOf(gtmEnd)}%; opacity:0.85"></div>
+        <div class="gantt-milestone" style="left:calc(${pctOf(fpgaDate)}% - 6px)" title="FPGA-proof: ${ip.target}"></div>
+        <div class="today-line" style="left:${pctOf(TODAY)}%"></div>
+      </div>`;
+    ganttBody.appendChild(row);
+  });
+
+  // Milestone summary
+  const milesMap = {};
+  IPS.forEach(ip => { if (!milesMap[ip.target]) milesMap[ip.target] = []; milesMap[ip.target].push(ip); });
+  const milesKeys = Object.keys(milesMap).sort((a,b) => {
+    const parts = s => { const p=s.split(' '); return new Date(parseInt(p[2]), {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}[p[1]], parseInt(p[0])); };
+    return parts(a) - parts(b);
+  });
+  const mileTbl = document.getElementById('tblMile');
+  milesKeys.forEach(k => {
+    const list = milesMap[k];
+    const avg = list.reduce((s,ip)=>s+ip.pct,0)/list.length;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="mono-cell"><strong>${k}</strong></td>
+      <td>${list.map(ip=>ip.name).join(', ')}</td>
+      <td class="mono-cell">${list.length}</td>
+      <td class="mono-cell">${Math.round(avg*100)}%</td>`;
+    mileTbl.appendChild(tr);
+  });
+}
+
+// ================== RISKS TABLE ==================
+const RISKS = [
+  {id:"R01", sev:"CRIT", name:"3rd-party PHY vendor slip (UCIe/224G SerDes)", cat:"Dependency", val:"$7.0M", owner:"VP Alliances", trig:"31 Dec 2026"},
+  {id:"R02", sev:"CRIT", name:"HCLTech under-delivers on 40% FY30 channel", cat:"Dependency", val:"$12.0M", owner:"CEO + VP Alliances", trig:"31 Dec 2026"},
+  {id:"R07", sev:"CRIT", name:"USB team owns 3 sequential USB IPs", cat:"Bottleneck", val:"$7.6M", owner:"COO", trig:"30 Sep 2026"},
+  {id:"R08", sev:"CRIT", name:"Ethernet team 100G→800G pivot", cat:"Bottleneck", val:"$5.0M", owner:"Chief Architect", trig:"31 Dec 2026"},
+  {id:"R03", sev:"HIGH", name:"Sion capacity on NRE/hardening", cat:"Dependency", val:"$2.5M", owner:"Sion partnership", trig:"31 Jan 2027"},
+  {id:"R04", sev:"HIGH", name:"TSMC referral pipeline stays informal", cat:"Dependency", val:"$1.5M", owner:"Foundry alliance", trig:"30 Jun 2027"},
+  {id:"R06", sev:"HIGH", name:"Arm channel underperforms 5% target", cat:"Dependency", val:"$1.5M", owner:"Arm alliance", trig:"30 Sep 2028"},
+  {id:"R09", sev:"HIGH", name:"Sankara C sole RTL owner HDMI 2.2 + AXI + ACE 5.0 + CHI", cat:"Bottleneck", val:"$1.3M", owner:"COO", trig:"31 Oct 2026"},
+  {id:"R10", sev:"HIGH", name:"9 open DV requisitions", cat:"Bottleneck", val:"$5.0M", owner:"Head HR + COO", trig:"30 Nov 2026"},
+  {id:"R11", sev:"HIGH", name:"SIONSemi engineer recall risk", cat:"Bottleneck", val:"$8.0M", owner:"Sion + HR", trig:"31 Mar 2027"},
+  {id:"R13", sev:"HIGH", name:"Mar-27 wave slippage (28 IPs @ 0-20%)", cat:"Dev delay", val:"$13.5M", owner:"COO + Chief Arch", trig:"weekly"},
+  {id:"R14", sev:"HIGH", name:"HDMI 2.2 + USB 2.0 Device due 30-Sep-2026", cat:"Dev delay", val:"$1.6M", owner:"COO", trig:"30 Sep 2026"},
+  {id:"R15", sev:"HIGH", name:"DP/AXI/MIPI stuck at 20%", cat:"Dev delay", val:"$2.1M", owner:"Chief Architect", trig:"Oct-Nov 2026"},
+  {id:"R05", sev:"MED",  name:"Interface spec churn (PCIe 6.x, CXL 3.x)", cat:"Dependency", val:"$1.8M", owner:"Chief Architect", trig:"ongoing"},
+  {id:"R12", sev:"MED",  name:"Trainee compensation compression + poaching", cat:"Bottleneck", val:"$3.0M", owner:"Head HR", trig:"Q2 2027"},
+  {id:"R16", sev:"MED",  name:"FPGA platform EOL / availability", cat:"Dev delay", val:"$1.0M", owner:"Chief Architect", trig:"ongoing"},
+  {id:"R17", sev:"MED",  name:"5nm/3nm node hardening timing", cat:"Dev delay", val:"$0.6M", owner:"Foundry alliance", trig:"30 Jun 2027"},
+  {id:"R18", sev:"LOW",  name:"Documentation / integration guides backlog", cat:"Dev delay", val:"$0.3M", owner:"VP Product", trig:"Q2 2027"}
+];
+const tblRisks = document.getElementById('tblRisks');
+if (tblRisks){
+  const sevPill = {"CRIT":"pill-red","HIGH":"pill-copper","MED":"pill-amber","LOW":"pill-green"};
+  RISKS.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="mono-cell"><strong>${r.id}</strong></td>
+      <td>${r.name}</td>
+      <td><span class="pill pill-ink">${r.cat}</span></td>
+      <td><span class="pill ${sevPill[r.sev]}">${r.sev}</span></td>
+      <td class="mono-cell">${r.val}</td>
+      <td class="mono-cell">${r.owner}</td>
+      <td class="mono-cell">${r.trig}</td>`;
+    tblRisks.appendChild(tr);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,639 @@
+{
+  "ips": {
+    "PCIe Gen4/5/6 Controller": {
+      "price": 225000,
+      "ga": "Dec-26",
+      "tier": "Flagship",
+      "cat": "HIGH-SPEED",
+      "color": "blue",
+      "group": "existing",
+      "phy": "Synopsys \u00b7 Cadence \u00b7 Alphawave"
+    },
+    "100G Ethernet MAC": {
+      "price": 200000,
+      "ga": "Dec-26",
+      "tier": "Flagship",
+      "cat": "NETWORKING",
+      "color": "green",
+      "group": "existing",
+      "phy": "Alphawave \u00b7 Synopsys \u00b7 Cadence"
+    },
+    "DDR5 Memory Controller": {
+      "price": 200000,
+      "ga": "Dec-26",
+      "tier": "Flagship",
+      "cat": "MEMORY",
+      "color": "copper",
+      "group": "existing",
+      "phy": "Synopsys \u00b7 Cadence \u00b7 Rambus"
+    },
+    "H.265 Codec": {
+      "price": 225000,
+      "ga": "Dec-26",
+      "tier": "Mid",
+      "cat": "VIDEO",
+      "color": "amber",
+      "group": "existing",
+      "phy": "\u2014 digital-only \u2014"
+    },
+    "USB 4.0 Controller": {
+      "price": 110000,
+      "ga": "Dec-26",
+      "tier": "Mid",
+      "cat": "INTERFACE",
+      "color": "violet",
+      "group": "existing",
+      "phy": "Synopsys \u00b7 Cadence \u00b7 Analogix"
+    },
+    "AMBA AXI Interconnect": {
+      "price": 85000,
+      "ga": "Dec-26",
+      "tier": "Entry",
+      "cat": "INTERCONNECT",
+      "color": "teal",
+      "group": "existing",
+      "phy": "\u2014 digital-only \u2014"
+    },
+    "LPDDR5 Controller": {
+      "price": 175000,
+      "ga": "Dec-26",
+      "tier": "Flagship",
+      "cat": "MEMORY",
+      "color": "copper",
+      "group": "new-2026",
+      "phy": "Synopsys \u00b7 Cadence \u00b7 Rambus"
+    },
+    "DisplayPort Controller": {
+      "price": 150000,
+      "ga": "Dec-26",
+      "tier": "Mid",
+      "cat": "DISPLAY",
+      "color": "violet",
+      "group": "new-2026",
+      "phy": "Synopsys \u00b7 Cadence \u00b7 Analogix"
+    },
+    "MIPI Controller": {
+      "price": 135000,
+      "ga": "Dec-26",
+      "tier": "Mid",
+      "cat": "INTERFACE",
+      "color": "teal",
+      "group": "new-2026",
+      "phy": "Synopsys \u00b7 Cadence \u00b7 Analog Bits"
+    },
+    "CXL Controller": {
+      "price": 350000,
+      "ga": "Mar-27",
+      "tier": "Flagship",
+      "cat": "AI/DATACENTER",
+      "color": "blue",
+      "group": "new-2027",
+      "phy": "Synopsys \u00b7 Alphawave \u00b7 Cadence"
+    },
+    "UCIe Controller": {
+      "price": 300000,
+      "ga": "Mar-27",
+      "tier": "Flagship",
+      "cat": "CHIPLET",
+      "color": "green",
+      "group": "new-2027",
+      "phy": "Alphawave \u00b7 Synopsys \u00b7 Ayar Labs"
+    },
+    "800G Ethernet MAC": {
+      "price": 325000,
+      "ga": "Mar-27",
+      "tier": "Flagship",
+      "cat": "NETWORKING",
+      "color": "amber",
+      "group": "new-2027",
+      "phy": "Alphawave \u00b7 Synopsys \u00b7 Cadence"
+    },
+    "256-Port PCIe Switch": {
+      "price": 400000,
+      "ga": "Mar-27",
+      "tier": "Flagship",
+      "cat": "HIGH-SPEED",
+      "color": "red",
+      "group": "new-2027",
+      "phy": "Alphawave \u00b7 Synopsys \u00b7 foundry"
+    }
+  },
+  "new_lics": {
+    "PCIe Gen4/5/6 Controller": [
+      1,
+      4,
+      9,
+      15
+    ],
+    "100G Ethernet MAC": [
+      1,
+      3,
+      7,
+      11
+    ],
+    "DDR5 Memory Controller": [
+      1,
+      4,
+      9,
+      13
+    ],
+    "H.265 Codec": [
+      1,
+      3,
+      6,
+      10
+    ],
+    "USB 4.0 Controller": [
+      1,
+      3,
+      7,
+      10
+    ],
+    "AMBA AXI Interconnect": [
+      2,
+      6,
+      12,
+      18
+    ],
+    "LPDDR5 Controller": [
+      1,
+      3,
+      8,
+      12
+    ],
+    "DisplayPort Controller": [
+      1,
+      3,
+      6,
+      10
+    ],
+    "MIPI Controller": [
+      1,
+      4,
+      8,
+      12
+    ],
+    "CXL Controller": [
+      0,
+      3,
+      8,
+      14
+    ],
+    "UCIe Controller": [
+      0,
+      2,
+      7,
+      12
+    ],
+    "800G Ethernet MAC": [
+      0,
+      2,
+      6,
+      11
+    ],
+    "256-Port PCIe Switch": [
+      0,
+      2,
+      5,
+      9
+    ]
+  },
+  "per_ip": {
+    "PCIe Gen4/5/6 Controller": {
+      "license": [
+        225000,
+        900000,
+        2025000,
+        3375000
+      ],
+      "maint": [
+        0.0,
+        45000.0,
+        225000.0,
+        630000.0
+      ],
+      "total": [
+        225000.0,
+        945000.0,
+        2250000.0,
+        4005000.0
+      ],
+      "new_lics": [
+        1,
+        4,
+        9,
+        15
+      ],
+      "cum_lics": [
+        1,
+        5,
+        14,
+        29
+      ]
+    },
+    "100G Ethernet MAC": {
+      "license": [
+        200000,
+        600000,
+        1400000,
+        2200000
+      ],
+      "maint": [
+        0.0,
+        40000.0,
+        160000.0,
+        440000.0
+      ],
+      "total": [
+        200000.0,
+        640000.0,
+        1560000.0,
+        2640000.0
+      ],
+      "new_lics": [
+        1,
+        3,
+        7,
+        11
+      ],
+      "cum_lics": [
+        1,
+        4,
+        11,
+        22
+      ]
+    },
+    "DDR5 Memory Controller": {
+      "license": [
+        200000,
+        800000,
+        1800000,
+        2600000
+      ],
+      "maint": [
+        0.0,
+        40000.0,
+        200000.0,
+        560000.0
+      ],
+      "total": [
+        200000.0,
+        840000.0,
+        2000000.0,
+        3160000.0
+      ],
+      "new_lics": [
+        1,
+        4,
+        9,
+        13
+      ],
+      "cum_lics": [
+        1,
+        5,
+        14,
+        27
+      ]
+    },
+    "H.265 Codec": {
+      "license": [
+        225000,
+        675000,
+        1350000,
+        2250000
+      ],
+      "maint": [
+        0.0,
+        45000.0,
+        180000.0,
+        450000.0
+      ],
+      "total": [
+        225000.0,
+        720000.0,
+        1530000.0,
+        2700000.0
+      ],
+      "new_lics": [
+        1,
+        3,
+        6,
+        10
+      ],
+      "cum_lics": [
+        1,
+        4,
+        10,
+        20
+      ]
+    },
+    "USB 4.0 Controller": {
+      "license": [
+        110000,
+        330000,
+        770000,
+        1100000
+      ],
+      "maint": [
+        0.0,
+        22000.0,
+        88000.0,
+        242000.0
+      ],
+      "total": [
+        110000.0,
+        352000.0,
+        858000.0,
+        1342000.0
+      ],
+      "new_lics": [
+        1,
+        3,
+        7,
+        10
+      ],
+      "cum_lics": [
+        1,
+        4,
+        11,
+        21
+      ]
+    },
+    "AMBA AXI Interconnect": {
+      "license": [
+        170000,
+        510000,
+        1020000,
+        1530000
+      ],
+      "maint": [
+        0.0,
+        34000.0,
+        136000.0,
+        340000.0
+      ],
+      "total": [
+        170000.0,
+        544000.0,
+        1156000.0,
+        1870000.0
+      ],
+      "new_lics": [
+        2,
+        6,
+        12,
+        18
+      ],
+      "cum_lics": [
+        2,
+        8,
+        20,
+        38
+      ]
+    },
+    "LPDDR5 Controller": {
+      "license": [
+        175000,
+        525000,
+        1400000,
+        2100000
+      ],
+      "maint": [
+        0.0,
+        35000.0,
+        140000.0,
+        420000.0
+      ],
+      "total": [
+        175000.0,
+        560000.0,
+        1540000.0,
+        2520000.0
+      ],
+      "new_lics": [
+        1,
+        3,
+        8,
+        12
+      ],
+      "cum_lics": [
+        1,
+        4,
+        12,
+        24
+      ]
+    },
+    "DisplayPort Controller": {
+      "license": [
+        150000,
+        450000,
+        900000,
+        1500000
+      ],
+      "maint": [
+        0.0,
+        30000.0,
+        120000.0,
+        300000.0
+      ],
+      "total": [
+        150000.0,
+        480000.0,
+        1020000.0,
+        1800000.0
+      ],
+      "new_lics": [
+        1,
+        3,
+        6,
+        10
+      ],
+      "cum_lics": [
+        1,
+        4,
+        10,
+        20
+      ]
+    },
+    "MIPI Controller": {
+      "license": [
+        135000,
+        540000,
+        1080000,
+        1620000
+      ],
+      "maint": [
+        0.0,
+        27000.0,
+        135000.0,
+        351000.0
+      ],
+      "total": [
+        135000.0,
+        567000.0,
+        1215000.0,
+        1971000.0
+      ],
+      "new_lics": [
+        1,
+        4,
+        8,
+        12
+      ],
+      "cum_lics": [
+        1,
+        5,
+        13,
+        25
+      ]
+    },
+    "CXL Controller": {
+      "license": [
+        0,
+        1050000,
+        2800000,
+        4900000
+      ],
+      "maint": [
+        0.0,
+        0.0,
+        210000.0,
+        770000.0
+      ],
+      "total": [
+        0.0,
+        1050000.0,
+        3010000.0,
+        5670000.0
+      ],
+      "new_lics": [
+        0,
+        3,
+        8,
+        14
+      ],
+      "cum_lics": [
+        0,
+        3,
+        11,
+        25
+      ]
+    },
+    "UCIe Controller": {
+      "license": [
+        0,
+        600000,
+        2100000,
+        3600000
+      ],
+      "maint": [
+        0.0,
+        0.0,
+        120000.0,
+        540000.0
+      ],
+      "total": [
+        0.0,
+        600000.0,
+        2220000.0,
+        4140000.0
+      ],
+      "new_lics": [
+        0,
+        2,
+        7,
+        12
+      ],
+      "cum_lics": [
+        0,
+        2,
+        9,
+        21
+      ]
+    },
+    "800G Ethernet MAC": {
+      "license": [
+        0,
+        650000,
+        1950000,
+        3575000
+      ],
+      "maint": [
+        0.0,
+        0.0,
+        130000.0,
+        520000.0
+      ],
+      "total": [
+        0.0,
+        650000.0,
+        2080000.0,
+        4095000.0
+      ],
+      "new_lics": [
+        0,
+        2,
+        6,
+        11
+      ],
+      "cum_lics": [
+        0,
+        2,
+        8,
+        19
+      ]
+    },
+    "256-Port PCIe Switch": {
+      "license": [
+        0,
+        800000,
+        2000000,
+        3600000
+      ],
+      "maint": [
+        0.0,
+        0.0,
+        160000.0,
+        560000.0
+      ],
+      "total": [
+        0.0,
+        800000.0,
+        2160000.0,
+        4160000.0
+      ],
+      "new_lics": [
+        0,
+        2,
+        5,
+        9
+      ],
+      "cum_lics": [
+        0,
+        2,
+        7,
+        16
+      ]
+    }
+  },
+  "totals": {
+    "license": [
+      1590000,
+      8430000,
+      20595000,
+      33950000
+    ],
+    "maint": [
+      0.0,
+      318000.0,
+      2004000.0,
+      6123000.0
+    ],
+    "total": [
+      1590000.0,
+      8748000.0,
+      22599000.0,
+      40073000.0
+    ]
+  }
+}

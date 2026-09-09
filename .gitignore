@@ -131,3 +131,6 @@ verify-*.png
 Icon
 .Spotlight-V100
 .Trashes
+
+# Blocker workflow test-preview artifacts (never commit)
+test-preview-*.html

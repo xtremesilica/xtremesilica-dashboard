@@ -1,0 +1,133 @@
+# ============================================================================
+# Xtremesilica Dashboard — .gitignore
+# ============================================================================
+
+# ---- OS / editor cruft --------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.swp
+*.swo
+*.swn
+*~
+.#*
+\#*#
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.history/
+.project
+.classpath
+.settings/
+
+# ---- Logs / temp / scratch ----------------------------------------------
+*.log
+*.tmp
+*.bak
+*.old
+*.orig
+*.rej
+tmp/
+temp/
+scratch/
+_scratch/
+
+# ---- Python (build-personal-emails.py etc.) -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+develop-eggs/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ---- Virtual environments ------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+.pyenv/
+
+# ---- Node (if a build step is ever added) -------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm/
+.yarn/
+.pnp.*
+
+# ---- Test / coverage / lint ---------------------------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+.eslintcache
+
+# ---- Environments / secrets — NEVER commit ------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+*.p12
+*.pfx
+secrets.json
+credentials.json
+.credentials/
+.aws/
+.ssh/
+
+# ---- Local build artifacts (dashboard is served as-is; never commit zips)
+xtremesilica-dashboard.zip
+*.zip
+!examples/*.zip
+
+# ---- Renders / screenshots produced during authoring --------------------
+screenshots/
+*.screenshot.png
+sweep*.png
+layout-check-*.json
+verify-*.png
+
+# ---- macOS / Windows / archives noise -----------------------------------
+._*
+.AppleDouble
+.LSOverride
+Icon
+.Spotlight-V100
+.Trashes

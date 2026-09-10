@@ -2,59 +2,57 @@
 
 **Status:** Active (production send mode)
 **Activated:** 2026-09-09 10:39 IST
-**Last correction:** 2026-09-10 11:39 IST — removed any dry-run / preview language from the skill definition; workflow is confirmed to actually send real emails on every scheduled run.
+**Last correction:** 2026-09-10 12:06 IST — introduced `blockers.json` as the single source of truth; dashboard and Python script now both consume it; script sends via the connected Gmail on every scheduled run.
 **Owner:** CEO Office (`sudeep@sionsemi.com`)
 
 ## Schedule
 - **Cadence:** Monday to Friday at **09:00 Asia/Kolkata (IST)**
 - **Cron:** `0 9 * * 1-5`
 - **Timezone:** `Asia/Kolkata (+05:30)`
-- **Schedule ID:** `scheduled-skill-3f62951f9f7e6a660aa317a06b8a340acbabc3ca`
+- **Schedule ID:** `scheduled-skill-3f62951f9f7e6a660aa317a06b8a340acbabc3ca`  *(unchanged)*
 
-## Send mode — PRODUCTION
-This is a real-send workflow. Every scheduled run calls `gsk gmail send --skip_confirmation true` and delivers the digest to the routing table below. It is not a preview and not a dry run. There is no confirmation gate, no test-preview banner, no re-routing.
+## Single source of truth — `blockers.json`
+`blockers.json` at the repo root is the canonical list of blockers.
+Both consumers read from it — there is no duplicate list anywhere:
+
+| Consumer | How it reads |
+|---|---|
+| `dashboard.html` / `index.html` | Client-side `fetch('blockers.json')` on page load. The Home-tab blockers table, the "N OPEN" count-pill and the "N open" sub-headline all update from the JSON. |
+| `build-personal-emails.py` | `json.load()` at the top of `main()` on every run. |
+
+Editing `blockers.json` (adding a blocker, flipping a status to CLOSED, changing a target date, etc.) updates BOTH surfaces on the next dashboard page-load and the next 09:00 IST reminder run — no other files to edit.
+
+## Send flow (every scheduled run)
+1. Runner pulls the latest `main` of https://github.com/xtremesilica/xtremesilica-dashboard.
+2. Runner executes `python3 build-personal-emails.py`.
+3. The script:
+   - Reads `blockers.json`.
+   - Excludes any blocker whose status contains `CLOSED`, `COMPLETED`, `RESOLVED` or `DONE` (case-insensitive; compound like `RED · REOPENED` is included via the RED / REOPENED tokens).
+   - Routes remaining blockers to each owner in the routing table below.
+   - Skips owners with zero open blockers (per-owner, not global).
+   - Sends via the connected Genspark Gmail (`gsk gmail send --from_account xtremesilica@gmail.com --skip_confirmation true`).
 
 ## Recipients
 
-| Owner | To | BCC (through 2026-09-16 only) |
-|---|---|---|
-| Mr Basheer Boddikonda | `ahmed@sionsemi.com` | `sudeep@sionsemi.com` |
-| Mr Girish B V | `girish@sionsemi.com` | `sudeep@sionsemi.com` |
+| Owner | Blocker IDs | To | BCC (through 2026-09-16 only) |
+|---|---|---|---|
+| Mr Basheer Boddikonda | B1, B2, B3, B4, B5, B6 | `ahmed@sionsemi.com` | `sudeep@sionsemi.com` |
+| Mr Girish B V | B2, B3 | `girish@sionsemi.com` | `sudeep@sionsemi.com` |
 
-**BCC auto-drop:** the BCC is included on every run only when the run date (Asia/Kolkata) is <= **2026-09-16**. From 2026-09-17 onward, no BCC.
+**BCC auto-drop:** the BCC is added on every run only when the run date (Asia/Kolkata) is <= **2026-09-16**. From 2026-09-17 onward, no BCC.
 
-## Sending account
-- **From:** `xtremesilica@gmail.com` (Genspark-connected Gmail)
-- **Transport:** `gsk gmail send` with `--skip_confirmation true`
-- **Subject format:** `Daily blocker digest — {N} open · {DD-Mon-YYYY}`
+## Filter — INCLUDE only these statuses
+`OPEN` · `REOPENED` · `RED` · `AMBER` · `PENDING`
 
-## Blocker filter
-
-**INCLUDE** (send) a blocker if its status contains ANY of:
-- `OPEN` · `REOPENED` · `RED` · `AMBER` · `PENDING`
-
-**EXCLUDE** (skip) a blocker if its status contains ANY of:
-- `CLOSED` · `COMPLETED` · `RESOLVED` · `DONE`
-
-Compound statuses (e.g. `RED · REOPENED`) match on either token; case-insensitive.
-
-## Skip-empty rule — the ONLY reason a send is skipped
-If, after the include/exclude filter, an owner has zero open blockers, the workflow does NOT send an email to that owner on that run. The other owner still receives their digest if they have any open blockers. Neither owner receives a "you're clear" notification — silence indicates zero open. This is a per-owner skip, not a global skip.
+## Filter — EXCLUDE these statuses
+`CLOSED` · `COMPLETED` · `RESOLVED` · `DONE`
 
 ## Content contract (verbatim, per CEO directive)
 - **Intro:** `Dear {name}, following blockers are on your name, kindly check and do the needful on high priority.`
 - **Footer:** `From the Office of CEO`
 - **Dashboard URL:** intentionally omitted from the email body.
-
-## Source of truth
-- Repo: https://github.com/xtremesilica/xtremesilica-dashboard (branch: `main`)
-- Machine-readable blockers: top of `build-personal-emails.py` (the `B1..B6` dicts)
-- Human-readable blockers: blockers table on the Home tab of `dashboard.html`
-
-Every run pulls latest `main` before rendering. There is no cache — a status flip in the repo is reflected in the next 09:00 IST send.
-
-## Continuation policy
-Reminders continue daily until each blocker is closed. The workflow itself remains active indefinitely — pause or cancel it from the Genspark Scheduled Skills page or via `gsk schedule cancel`.
+- **Preview banner:** none. Production sends never emit a preview banner.
+- **Header timestamp:** computed dynamically in Asia/Kolkata at every render.
 
 ## Managing the workflow
 
@@ -68,5 +66,6 @@ Reminders continue daily until each blocker is closed. The workflow itself remai
 | One run's output | `gsk workflow output --id <run_id>` |
 
 ## Change log
-- **2026-09-10 11:39 IST** — Correction. Rewrote the skill definition to remove any language that could be read as a dry-run or preview instruction. Sent today's missed reminder manually to both owners (Basheer -> ahmed@sionsemi.com; Girish -> girish@sionsemi.com; BCC sudeep@sionsemi.com). Schedule unchanged.
+- **2026-09-10 12:06 IST** — Introduced `blockers.json` as the single source of truth for both the dashboard and the reminder emails. Corrected the opening docstring of `build-personal-emails.py` (Basheer B1–B6). Replaced the literal `\u2192` escape with the real → character. Skill updated so every scheduled run executes `python3 build-personal-emails.py` (which does filter, render and send in one call). Schedule unchanged.
+- **2026-09-10 11:39 IST** — Removed dry-run / preview language from the skill; header timestamp made dynamic; PREVIEW banner removed from production emails.
 - **2026-09-09 10:39 IST** — Production workflow activated. Mon-Fri 09:00 IST. First-week BCC to `sudeep@sionsemi.com` (auto-drops after 2026-09-16).

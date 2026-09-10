@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "single_source_of_truth": true,
+    "consumers": ["dashboard.html", "index.html", "build-personal-emails.py"],
+    "excluded_statuses": ["CLOSED", "COMPLETED", "RESOLVED", "DONE"],
+    "last_manually_edited": "2026-09-10",
+    "notes": "Edit this file to update BOTH the dashboard blockers table and the daily reminder emails on the next scheduled run. Any blocker whose status contains CLOSED/COMPLETED/RESOLVED/DONE is filtered out automatically."
+  },
+  "blockers": [
+    {
+      "id": "B1",
+      "title": "Claude &amp; AWS Server allotment for 22 of 41 IPs",
+      "description": "<strong>19/41 done</strong> — compute allotted for controllers listed earlier. <strong>22 IPs remain</strong>: H.265, AMBA AXI, PCIe Gen6 Sw, CXL, UALink 2.0, Ultra Ethernet, HBM4, <strong>5 RISC-V cores (XR-V1…V5)</strong>, and <strong>10 new Space IPs</strong> (V2SP, V3SP, ECC/EDAC, Memory Scrubber, Fault-Management, Lockstep/TMR, SpaceWire, SpaceFibre, NoC-FT, Root of Trust — added Sep-26, all UNASSIGNED). Target closure will slip well past 10-Sep without accelerated staffing.",
+      "sev": "HIGH",
+      "sev_color": "#B91C1C",
+      "target": "10-Sep-26",
+      "status": "RED · REOPENED",
+      "status_text": "RED · REOPENED",
+      "status_bg": "#FEE2E2",
+      "status_color": "#B91C1C",
+      "owners": [
+        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+      ]
+    },
+    {
+      "id": "B2",
+      "title": "SCL partnership for Space-IP rad-hard prototypes",
+      "description": "Sign up with <strong>SCL (Semi-Conductor Laboratory)</strong> for future Space IPs — rad-hardened prototypes on 180nm process; unlocks ISRO / DRDO / BEL pipeline",
+      "sev": "HIGH",
+      "sev_color": "#C2410C",
+      "target": "30-Sep-26",
+      "status": "RED · OPEN",
+      "status_text": "RED · OPEN",
+      "status_bg": "#FEE2E2",
+      "status_color": "#B91C1C",
+      "owners": [
+        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"},
+        {"name": "Girish B V", "email": "girish@sionsemi.com"}
+      ]
+    },
+    {
+      "id": "B3",
+      "title": "DLI funding for PCIe Gen6 Switch tapeout",
+      "description": "Discuss with <strong>C-DAC / IESA</strong> for <strong>DLI (Design Linked Incentive)</strong> funding — target: PCIe Gen6 Switch fabric tapeout ($400K ASP · $4.91M FY30 revenue)",
+      "sev": "HIGH",
+      "sev_color": "#C2410C",
+      "target": "15-Oct-26",
+      "status": "RED · OPEN",
+      "status_text": "RED · OPEN",
+      "status_bg": "#FEE2E2",
+      "status_color": "#B91C1C",
+      "owners": [
+        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"},
+        {"name": "Girish B V", "email": "girish@sionsemi.com"}
+      ]
+    },
+    {
+      "id": "B4",
+      "title": "3 new AI/Datacenter IPs &mdash; team assignment &amp; compute",
+      "description": "Three newly added AI/Datacenter &amp; memory IPs — <strong>UALink 2.0</strong> (chiplet fabric, competes with UCIe/NVLink), <strong>Ultra Ethernet</strong> (AI-cluster RDMA, competes with InfiniBand), <strong>HBM4 Controller</strong> (next-gen 3D-stacked memory) — all Mar-27 GA. RTL &amp; DV owners <strong>UNASSIGNED</strong>, Claude + AWS <strong>NOT ALLOTTED</strong>. Every week unstaffed pushes Mar-27 gate to Jun-27 and puts ~$2.4M FY30 revenue at risk.",
+      "sev": "CRITICAL",
+      "sev_color": "#B91C1C",
+      "target": "20-Sep-26",
+      "status": "RED · OPEN",
+      "status_text": "RED · OPEN",
+      "status_bg": "#FEE2E2",
+      "status_color": "#B91C1C",
+      "owners": [
+        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+      ]
+    },
+    {
+      "id": "B5",
+      "title": "RISC-V CPU family (5 cores XR-V1…V5) &mdash; new product line, entire team to build",
+      "description": "Five new RISC-V cores added to portfolio — <strong>XR-V1</strong> (RV32 tiny, IoT/wearables), <strong>XR-V2</strong> (RV32 perf MCU, automotive/robotics), <strong>XR-V3</strong> (RV64 efficient AP, edge-AI/drones), <strong>XR-V4</strong> (RV64 OoO, Linux/networking/cockpit), <strong>XR-V5</strong> (RV64 Vector, AI accelerators/HPC). RTL/DV <strong>UNASSIGNED across all 5</strong>, no compute. Requires a <strong>net-new CPU architecture team (5-8 engineers)</strong> — hiring plan due by 20-Sep. Represents <strong>$7.85M FY30</strong> (22% of the 41-IP model); slippage puts the uplift to $36.20M at risk.",
+      "sev": "CRITICAL",
+      "sev_color": "#B91C1C",
+      "target": "30-Sep-26",
+      "status": "RED · OPEN",
+      "status_text": "RED · OPEN",
+      "status_bg": "#FEE2E2",
+      "status_color": "#B91C1C",
+      "owners": [
+        {"name": "CEO", "email": ""},
+        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+      ]
+    },
+    {
+      "id": "B6",
+      "title": "Space IP portfolio (10 IPs) &mdash; rad-hard team + SCL/ISRO qualification path",
+      "description": "Ten new Space IPs — <strong>V2SP</strong> (16-bit RISC-V space processor), <strong>V3SP</strong> (32-bit RISC-V space processor), <strong>ECC/EDAC library</strong>, <strong>Memory Scrubber</strong>, <strong>Fault-Management Controller</strong>, <strong>Lockstep/TMR library</strong>, <strong>SpaceWire</strong> (controller/router), <strong>SpaceFibre</strong> (controller), <strong>NoC-FT</strong> (fault-tolerant NoC), <strong>Root of Trust</strong>. RTL/DV UNASSIGNED across all 10. Requires a <strong>dedicated rad-hard/space-IP team (4-6 engineers)</strong> with fault-tolerance experience, plus <strong>SCL 180nm tape-out slot</strong> (couples with B2). Represents <strong>$4M FY30</strong> uplift (from $32.20M → $36.20M) and opens the ISRO/DRDO/BEL/Ananth Technologies pipeline. Hiring plan + SCL MoU due by 15-Oct.",
+      "sev": "CRITICAL",
+      "sev_color": "#B91C1C",
+      "target": "15-Oct-26",
+      "status": "RED · OPEN",
+      "status_text": "RED · OPEN",
+      "status_bg": "#FEE2E2",
+      "status_color": "#B91C1C",
+      "owners": [
+        {"name": "CEO", "email": ""},
+        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+      ]
+    }
+  ]
+}

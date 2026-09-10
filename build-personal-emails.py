@@ -155,19 +155,44 @@ def render_email(recipient_name, blockers, date_str, is_preview=False):
 '''
 
 
-DATE = "Monday, 07 September 2026 &middot; 06:56 IST"
+import os
+from datetime import datetime, timezone, timedelta
 
-# ------------------------------------------------------------------ Basheer (all 6)
-open("/home/user/workspace/xtremesilica/blocker-email-basheer.html", "w", encoding="utf-8").write(
-    render_email("Mr Basheer Boddikonda", [B1, B2, B3, B4, B5, B6], DATE, is_preview=True))
-open("/tmp/email_basheer_live.html", "w", encoding="utf-8").write(
-    render_email("Mr Basheer Boddikonda", [B1, B2, B3, B4, B5, B6], DATE, is_preview=False))
+# Asia/Kolkata is a fixed offset UTC+05:30 (India does not observe DST),
+# so a fixed-offset timezone is correct and needs no zoneinfo/tzdata.
+IST = timezone(timedelta(hours=5, minutes=30), name="Asia/Kolkata")
 
-# ------------------------------------------------------------------ Girish (B2, B3 only)
-open("/home/user/workspace/xtremesilica/blocker-email-girish.html", "w", encoding="utf-8").write(
-    render_email("Mr Girish B V", [B2, B3], DATE, is_preview=True))
-open("/tmp/email_girish_live.html", "w", encoding="utf-8").write(
-    render_email("Mr Girish B V", [B2, B3], DATE, is_preview=False))
 
-print("Basheer template: 6 rows")
-print("Girish template: 2 rows")
+def now_ist_header():
+    """Human-readable header timestamp in Asia/Kolkata, computed at call time.
+    Example: 'Thursday, 10 September 2026 · 11:47 IST'"""
+    now = datetime.now(IST)
+    return now.strftime("%A, %d %B %Y") + " &middot; " + now.strftime("%H:%M") + " IST"
+
+
+def out_dir():
+    """Write outputs next to this script — works when invoked from anywhere."""
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+def build_and_write():
+    date_str = now_ist_header()
+    d = out_dir()
+
+    # Basheer — 6 open blockers (production; no preview banner)
+    with open(os.path.join(d, "blocker-email-basheer.html"), "w", encoding="utf-8") as f:
+        f.write(render_email("Mr Basheer Boddikonda",
+                             [B1, B2, B3, B4, B5, B6], date_str, is_preview=False))
+
+    # Girish — 2 open blockers (production; no preview banner)
+    with open(os.path.join(d, "blocker-email-girish.html"), "w", encoding="utf-8") as f:
+        f.write(render_email("Mr Girish B V",
+                             [B2, B3], date_str, is_preview=False))
+
+    print(f"Rendered at: {date_str}")
+    print("Basheer template: 6 rows (production, no preview banner)")
+    print("Girish template : 2 rows (production, no preview banner)")
+
+
+if __name__ == "__main__":
+    build_and_write()

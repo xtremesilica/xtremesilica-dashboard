@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
 """Xtremesilica daily blocker reminder — generate and send.
 
-Basheer receives B1-B6 (owner or co-owner of all six blockers).
+Basheer receives B1–B6 (owner or co-owner of all six blockers).
 Girish  receives B2 and B3 only (co-owner of SCL partnership and DLI funding).
 
-Reads blockers.json (single source of truth used by dashboard.html /
-index.html and this script). Blockers whose status contains CLOSED,
-COMPLETED, RESOLVED or DONE are excluded automatically.
+`blockers.json` is the single source of truth used by dashboard.html /
+index.html and this script. It provides both:
+  - blockers[]   -- the current open items
+  - recipients[] -- name, email, output_file for every owner who receives a
+                    digest.
+Blockers whose status contains CLOSED, COMPLETED, RESOLVED or DONE are
+excluded automatically.
 
-Renders one HTML digest per recipient and, unless invoked with
---dry-run, sends it via the connected Genspark Gmail account
+Renders one HTML digest per recipient in `recipients[]` and, unless invoked
+with --dry-run, sends it via the connected Genspark Gmail account
 (xtremesilica@gmail.com) using `gsk gmail send`.
 
-Usage:
-    python3 build-personal-emails.py             # render + send
-    python3 build-personal-emails.py --dry-run   # render only
+Failure semantics
+-----------------
+Any Gmail send that returns a non-success status, no `sent_message_id`, or
+raises an error causes the script to exit non-zero. This prevents the
+scheduled workflow from ever reporting false success.
+
+Usage
+-----
+    python3 build-personal-emails.py             # render + send  (workflow)
+    python3 build-personal-emails.py --dry-run   # render only    (tests)
 """
 import os
 import re
@@ -29,11 +40,6 @@ BCC_UNTIL = date(2026, 9, 16)
 BCC_ADDRESS = "sudeep@sionsemi.com"
 FROM_ACCOUNT = "xtremesilica@gmail.com"
 
-TARGETS = [
-    ("Mr Basheer Boddikonda", "ahmed@sionsemi.com",  "blocker-email-basheer.html"),
-    ("Mr Girish B V",         "girish@sionsemi.com", "blocker-email-girish.html"),
-]
-
 
 def script_dir():
     return os.path.dirname(os.path.abspath(__file__))
@@ -44,14 +50,17 @@ def now_ist_header():
     return now.strftime("%A, %d %B %Y") + " &middot; " + now.strftime("%H:%M") + " IST"
 
 
-def load_open_blockers():
+def load_data():
     with open(os.path.join(script_dir(), "blockers.json"), encoding="utf-8") as f:
-        data = json.load(f)
+        return json.load(f)
+
+
+def open_blockers(data):
     return [b for b in data.get("blockers", []) if not EXCLUDED_RE.search(b.get("status", ""))]
 
 
-def blockers_for(target_email, open_blockers):
-    return [b for b in open_blockers
+def blockers_for(target_email, open_list):
+    return [b for b in open_list
             if any(o.get("email") == target_email for o in b.get("owners", []))]
 
 
@@ -132,6 +141,10 @@ def render_email(recipient_name, blockers, date_str):
     )
 
 
+class SendError(Exception):
+    """Raised when a gsk gmail send returns a non-success or missing message id."""
+
+
 def send_via_gsk(to, subject, html, bcc):
     args = [
         "gsk", "gmail", "send",
@@ -144,18 +157,52 @@ def send_via_gsk(to, subject, html, bcc):
     ]
     if bcc:
         args += ["--bcc", bcc]
-    proc = subprocess.run(args, capture_output=True, text=True)
     try:
-        d = json.loads(proc.stdout)
-        data = d.get("data") or {}
-        return {
-            "status": data.get("status") or d.get("status") or "unknown",
-            "message_id": data.get("sent_message_id"),
-            "to": data.get("to"),
-            "bcc": data.get("bcc"),
-        }
+        proc = subprocess.run(args, capture_output=True, text=True, timeout=120)
     except Exception as exc:
-        return {"status": "failed", "error": f"{exc} | stderr={proc.stderr[:200]}"}
+        raise SendError(f"gsk gmail send raised: {exc!r}")
+
+    if proc.returncode != 0:
+        raise SendError(
+            f"gsk gmail send returned exit code {proc.returncode} for to={to}. "
+            f"stderr={proc.stderr[:400]!r} stdout={proc.stdout[:400]!r}"
+        )
+
+    try:
+        payload = json.loads(proc.stdout)
+    except Exception as exc:
+        raise SendError(
+            f"gsk gmail send returned non-JSON stdout for to={to}: {exc!r} "
+            f"raw={proc.stdout[:400]!r}"
+        )
+
+    top_status = payload.get("status")
+    data = payload.get("data") or {}
+    inner_status = data.get("status")
+    mid = data.get("sent_message_id")
+
+    if top_status != "ok":
+        raise SendError(
+            f"gsk gmail send returned status={top_status!r} for to={to}. "
+            f"message={payload.get('message')!r} payload={payload}"
+        )
+    if inner_status not in ("success", "sent"):
+        raise SendError(
+            f"gsk gmail send inner status was {inner_status!r} (expected 'success') for to={to}. "
+            f"payload={payload}"
+        )
+    if not mid:
+        raise SendError(
+            f"gsk gmail send returned no sent_message_id for to={to}. payload={payload}"
+        )
+
+    return {
+        "status": inner_status,
+        "message_id": mid,
+        "thread_id": data.get("thread_id"),
+        "to": data.get("to"),
+        "bcc": data.get("bcc"),
+    }
 
 
 def main():
@@ -165,17 +212,32 @@ def main():
     date_str = now_ist_header()
     today = datetime.now(IST).date()
     bcc = BCC_ADDRESS if today <= BCC_UNTIL else None
+    subject_date = today.strftime("%d-%b-%Y")
 
-    open_blockers = load_open_blockers()
-    open_ids = ", ".join(b["id"] for b in open_blockers) or "none"
+    data = load_data()
+    recipients = data.get("recipients") or []
+    if not recipients:
+        print("ERROR: blockers.json has no recipients[] -- refusing to run", file=sys.stderr)
+        sys.exit(2)
+
+    open_list = open_blockers(data)
+    open_ids = ", ".join(b["id"] for b in open_list) or "none"
     print(f"Rendered at   : {date_str}")
-    print(f"Open blockers : {len(open_blockers)} ({open_ids})")
+    print(f"Open blockers : {len(open_list)} ({open_ids})")
+    print(f"Recipients    : {len(recipients)} (from blockers.json)")
     print(f"BCC audit     : {'enabled -> ' + bcc if bcc else 'disabled (past 2026-09-16)'}")
     print(f"Mode          : {'DRY-RUN (no emails sent)' if dry_run else 'LIVE (sending via gsk gmail)'}")
 
     d = script_dir()
-    for recipient_name, target_email, out_filename in TARGETS:
-        picked = blockers_for(target_email, open_blockers)
+    failures = []
+    sent = []
+
+    for r in recipients:
+        recipient_name = r["name"]
+        target_email = r["email"]
+        out_filename = r.get("output_file") or f"blocker-email-{recipient_name.split()[-1].lower()}.html"
+
+        picked = blockers_for(target_email, open_list)
         if not picked:
             print(f"[{recipient_name}] skipped -- no open blockers")
             continue
@@ -184,15 +246,35 @@ def main():
         with open(os.path.join(d, out_filename), "w", encoding="utf-8") as f:
             f.write(html)
 
-        subject = f"Daily blocker digest -- {len(picked)} open . {today.strftime('%d-%b-%Y')}"
+        # Restored production subject format: em-dash and middle-dot
+        subject = f"Daily blocker digest \u2014 {len(picked)} open \u00b7 {subject_date}"
         ids = ", ".join(b["id"] for b in picked)
-        print(f"[{recipient_name}] to={target_email} bcc={bcc or 'none'} blocker_ids=[{ids}] subject={subject!r}")
+        print(f"[{recipient_name}] to={target_email} bcc={bcc or 'none'} "
+              f"blocker_ids=[{ids}] subject={subject!r}")
 
         if dry_run:
             continue
 
-        result = send_via_gsk(target_email, subject, html, bcc)
-        print(f"    -> gmail: {result}")
+        try:
+            result = send_via_gsk(target_email, subject, html, bcc)
+            print(f"    -> gmail: status={result['status']} id={result['message_id']} "
+                  f"to={result['to']} bcc={result['bcc']}")
+            sent.append({"recipient": recipient_name, **result})
+        except SendError as exc:
+            print(f"    !! FAIL for {recipient_name} ({target_email}): {exc}", file=sys.stderr)
+            failures.append({"recipient": recipient_name, "to": target_email, "error": str(exc)})
+
+    if failures:
+        print(f"\nFAILED sends: {len(failures)}", file=sys.stderr)
+        for f in failures:
+            print(f"  - {f['recipient']} <{f['to']}>: {f['error']}", file=sys.stderr)
+        sys.exit(1)
+
+    if not dry_run and not sent:
+        # Zero sends AND zero failures = zero recipients had open blockers.
+        # That is a legitimate no-op; log it and exit clean.
+        print("No recipient had any open blockers; no emails sent.")
+    print("DONE")
 
 
 if __name__ == "__main__":

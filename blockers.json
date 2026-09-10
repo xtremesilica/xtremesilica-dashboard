@@ -1,11 +1,32 @@
 {
   "meta": {
     "single_source_of_truth": true,
-    "consumers": ["dashboard.html", "index.html", "build-personal-emails.py"],
-    "excluded_statuses": ["CLOSED", "COMPLETED", "RESOLVED", "DONE"],
+    "consumers": [
+      "dashboard.html",
+      "index.html",
+      "build-personal-emails.py"
+    ],
+    "excluded_statuses": [
+      "CLOSED",
+      "COMPLETED",
+      "RESOLVED",
+      "DONE"
+    ],
     "last_manually_edited": "2026-09-10",
     "notes": "Edit this file to update BOTH the dashboard blockers table and the daily reminder emails on the next scheduled run. Any blocker whose status contains CLOSED/COMPLETED/RESOLVED/DONE is filtered out automatically."
   },
+  "recipients": [
+    {
+      "name": "Mr Basheer Boddikonda",
+      "email": "ahmed@sionsemi.com",
+      "output_file": "blocker-email-basheer.html"
+    },
+    {
+      "name": "Mr Girish B V",
+      "email": "girish@sionsemi.com",
+      "output_file": "blocker-email-girish.html"
+    }
+  ],
   "blockers": [
     {
       "id": "B1",
@@ -19,7 +40,10 @@
       "status_bg": "#FEE2E2",
       "status_color": "#B91C1C",
       "owners": [
-        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+        {
+          "name": "Basheer Boddikonda",
+          "email": "ahmed@sionsemi.com"
+        }
       ]
     },
     {
@@ -34,8 +58,14 @@
       "status_bg": "#FEE2E2",
       "status_color": "#B91C1C",
       "owners": [
-        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"},
-        {"name": "Girish B V", "email": "girish@sionsemi.com"}
+        {
+          "name": "Basheer Boddikonda",
+          "email": "ahmed@sionsemi.com"
+        },
+        {
+          "name": "Girish B V",
+          "email": "girish@sionsemi.com"
+        }
       ]
     },
     {
@@ -50,8 +80,14 @@
       "status_bg": "#FEE2E2",
       "status_color": "#B91C1C",
       "owners": [
-        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"},
-        {"name": "Girish B V", "email": "girish@sionsemi.com"}
+        {
+          "name": "Basheer Boddikonda",
+          "email": "ahmed@sionsemi.com"
+        },
+        {
+          "name": "Girish B V",
+          "email": "girish@sionsemi.com"
+        }
       ]
     },
     {
@@ -66,7 +102,10 @@
       "status_bg": "#FEE2E2",
       "status_color": "#B91C1C",
       "owners": [
-        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+        {
+          "name": "Basheer Boddikonda",
+          "email": "ahmed@sionsemi.com"
+        }
       ]
     },
     {
@@ -81,8 +120,14 @@
       "status_bg": "#FEE2E2",
       "status_color": "#B91C1C",
       "owners": [
-        {"name": "CEO", "email": ""},
-        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+        {
+          "name": "CEO",
+          "email": ""
+        },
+        {
+          "name": "Basheer Boddikonda",
+          "email": "ahmed@sionsemi.com"
+        }
       ]
     },
     {
@@ -97,8 +142,14 @@
       "status_bg": "#FEE2E2",
       "status_color": "#B91C1C",
       "owners": [
-        {"name": "CEO", "email": ""},
-        {"name": "Basheer Boddikonda", "email": "ahmed@sionsemi.com"}
+        {
+          "name": "CEO",
+          "email": ""
+        },
+        {
+          "name": "Basheer Boddikonda",
+          "email": "ahmed@sionsemi.com"
+        }
       ]
     }
   ]

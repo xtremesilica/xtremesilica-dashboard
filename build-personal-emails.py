@@ -13,14 +13,13 @@ Blockers whose status contains CLOSED, COMPLETED, RESOLVED or DONE are
 excluded automatically.
 
 Renders one HTML digest per recipient in `recipients[]` and, unless invoked
-with --dry-run, sends it via the connected Genspark Gmail account
-(xtremesilica@gmail.com) using `gsk gmail send`.
+with --dry-run, sends it through Gmail SMTP. GitHub Actions supplies
+`GMAIL_USERNAME` and `GMAIL_APP_PASSWORD` from encrypted repository secrets.
 
 Failure semantics
 -----------------
-Any Gmail send that returns a non-success status, no `sent_message_id`, or
-raises an error causes the script to exit non-zero. This prevents the
-scheduled workflow from ever reporting false success.
+Missing credentials or any SMTP error causes the script to exit non-zero.
+This prevents the scheduled workflow from reporting false success.
 
 Usage
 -----
@@ -31,14 +30,18 @@ import os
 import re
 import sys
 import json
-import subprocess
+import smtplib
+import ssl
+from email.message import EmailMessage
+from email.utils import make_msgid
 from datetime import datetime, timezone, timedelta, date
 
 IST = timezone(timedelta(hours=5, minutes=30), name="Asia/Kolkata")
 EXCLUDED_RE = re.compile(r"\b(CLOSED|COMPLETED|RESOLVED|DONE)\b", re.I)
 BCC_UNTIL = date(2026, 9, 16)
 BCC_ADDRESS = "sudeep@sionsemi.com"
-FROM_ACCOUNT = "xtremesilica@gmail.com"
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
 
 
 def script_dir():
@@ -142,68 +145,55 @@ def render_email(recipient_name, blockers, date_str):
 
 
 class SendError(Exception):
-    """Raised when a gsk gmail send returns a non-success or missing message id."""
+    """Raised when Gmail SMTP delivery fails."""
 
 
-def send_via_gsk(to, subject, html, bcc):
-    args = [
-        "gsk", "gmail", "send",
-        "--from_account", FROM_ACCOUNT,
-        "--to", to,
-        "--subject", subject,
-        "--content_type", "text/html",
-        "--body", html,
-        "--skip_confirmation", "true",
-    ]
+def smtp_credentials():
+    username = os.getenv("GMAIL_USERNAME", "").strip()
+    password = os.getenv("GMAIL_APP_PASSWORD", "").strip()
+    if not username or not password:
+        raise SendError(
+            "Missing GMAIL_USERNAME or GMAIL_APP_PASSWORD. "
+            "Add both as GitHub Actions repository secrets."
+        )
+    return username, password
+
+
+def send_via_gmail(to, subject, html, bcc):
+    username, password = smtp_credentials()
+    msg = EmailMessage()
+    msg["From"] = username
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg["Message-ID"] = make_msgid(domain=username.split("@")[-1])
+    msg.set_content("This email contains an HTML blocker digest.")
+    msg.add_alternative(html, subtype="html")
+
+    envelope_recipients = [to]
     if bcc:
-        args += ["--bcc", bcc]
-    try:
-        proc = subprocess.run(args, capture_output=True, text=True, timeout=120)
-    except Exception as exc:
-        raise SendError(f"gsk gmail send raised: {exc!r}")
-
-    if proc.returncode != 0:
-        raise SendError(
-            f"gsk gmail send returned exit code {proc.returncode} for to={to}. "
-            f"stderr={proc.stderr[:400]!r} stdout={proc.stdout[:400]!r}"
-        )
+        envelope_recipients.append(bcc)
 
     try:
-        payload = json.loads(proc.stdout)
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context, timeout=120) as server:
+            server.login(username, password)
+            refused = server.send_message(
+                msg,
+                from_addr=username,
+                to_addrs=envelope_recipients,
+            )
     except Exception as exc:
-        raise SendError(
-            f"gsk gmail send returned non-JSON stdout for to={to}: {exc!r} "
-            f"raw={proc.stdout[:400]!r}"
-        )
+        raise SendError(f"Gmail SMTP delivery failed for to={to}: {exc}") from exc
 
-    top_status = payload.get("status")
-    data = payload.get("data") or {}
-    inner_status = data.get("status")
-    mid = data.get("sent_message_id")
-
-    if top_status != "ok":
-        raise SendError(
-            f"gsk gmail send returned status={top_status!r} for to={to}. "
-            f"message={payload.get('message')!r} payload={payload}"
-        )
-    if inner_status not in ("success", "sent"):
-        raise SendError(
-            f"gsk gmail send inner status was {inner_status!r} (expected 'success') for to={to}. "
-            f"payload={payload}"
-        )
-    if not mid:
-        raise SendError(
-            f"gsk gmail send returned no sent_message_id for to={to}. payload={payload}"
-        )
+    if refused:
+        raise SendError(f"Gmail SMTP refused recipients for to={to}: {refused}")
 
     return {
-        "status": inner_status,
-        "message_id": mid,
-        "thread_id": data.get("thread_id"),
-        "to": data.get("to"),
-        "bcc": data.get("bcc"),
+        "status": "sent",
+        "message_id": msg["Message-ID"],
+        "to": to,
+        "bcc": bcc,
     }
-
 
 def main():
     argv = sys.argv[1:]
@@ -226,7 +216,7 @@ def main():
     print(f"Open blockers : {len(open_list)} ({open_ids})")
     print(f"Recipients    : {len(recipients)} (from blockers.json)")
     print(f"BCC audit     : {'enabled -> ' + bcc if bcc else 'disabled (past 2026-09-16)'}")
-    print(f"Mode          : {'DRY-RUN (no emails sent)' if dry_run else 'LIVE (sending via gsk gmail)'}")
+    print(f"Mode          : {'DRY-RUN (no emails sent)' if dry_run else 'LIVE (sending via Gmail SMTP)'}")
 
     d = script_dir()
     failures = []
@@ -256,7 +246,7 @@ def main():
             continue
 
         try:
-            result = send_via_gsk(target_email, subject, html, bcc)
+            result = send_via_gmail(target_email, subject, html, bcc)
             print(f"    -> gmail: status={result['status']} id={result['message_id']} "
                   f"to={result['to']} bcc={result['bcc']}")
             sent.append({"recipient": recipient_name, **result})

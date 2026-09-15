@@ -1,0 +1,50 @@
+name: Send weekday blocker emails
+
+on:
+  schedule:
+    # GitHub cron uses UTC. 03:30 UTC = 09:00 IST.
+    - cron: "30 3 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Render emails without sending"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekday-blocker-email
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate or send blocker emails
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.dry_run }}" == "true" ]]; then
+            python build-personal-emails.py --dry-run
+          else
+            if [[ -z "$GMAIL_USERNAME" || -z "$GMAIL_APP_PASSWORD" ]]; then
+              echo "GMAIL_USERNAME and GMAIL_APP_PASSWORD repository secrets are required." >&2
+              exit 1
+            fi
+            python build-personal-emails.py
+          fi

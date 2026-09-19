@@ -606,10 +606,10 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 #assignmentDialog button{cursor:pointer}
 #assignmentDialog .dialog-shell{background:#fff}
 #assignmentDialog .dialog-header{display:flex;justify-content:space-between;gap:24px;padding:26px 30px 20px;
-  background:linear-gradient(135deg,var(--ink),#263652);color:#fff}
+  background:linear-gradient(135deg,#7F1D1D,var(--red));color:#fff}
 #assignmentDialog .dialog-header h1{margin:2px 0 3px;font-family:'Space Grotesk',sans-serif;font-size:25px;color:#fff}
 #assignmentDialog .eyebrow{margin:0;color:#F87171;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.16em}
-#assignmentDialog .subtitle{margin:0;color:#c5cede;font-size:13px}
+#assignmentDialog .subtitle{margin:0;color:#FEE2E2;font-size:13px}
 #assignmentDialog .icon-button{align-self:flex-start;border:0;border-radius:8px;padding:0;width:36px;height:36px;
   background:rgba(255,255,255,.1);color:#fff;font-size:25px}
 #assignmentDialog .stepper{display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:20px 30px;list-style:none;
@@ -617,20 +617,20 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 #assignmentDialog .stepper li{display:flex;align-items:center;gap:8px}
 #assignmentDialog .stepper li:not(:last-child)::after{content:"";height:2px;flex:1;margin:0 12px;background:var(--line)}
 #assignmentDialog .stepper span{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--grid)}
-#assignmentDialog .stepper .active{color:var(--blue)}
-#assignmentDialog .stepper .active span{background:var(--blue);color:#fff}
+#assignmentDialog .stepper .active{color:var(--red)}
+#assignmentDialog .stepper .active span{background:var(--red);color:#fff}
 #assignmentDialog .panel{padding:28px 30px 30px}
 #assignmentDialog .panel>label,#assignmentDialog .form-grid label{display:grid;gap:7px;font-weight:600;font-size:13px;text-align:left}
 #assignmentDialog textarea,#assignmentDialog input,#assignmentDialog select{width:100%;padding:12px;border:1px solid var(--line2);
   border-radius:8px;background:#fff;color:var(--ink);outline:none}
 #assignmentDialog textarea{resize:vertical}
 #assignmentDialog textarea:focus,#assignmentDialog input:focus,#assignmentDialog select:focus{
-  border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,79,216,.12)}
+  border-color:var(--red);box-shadow:0 0 0 3px rgba(185,28,28,.14)}
 #assignmentDialog .hint-row{display:flex;justify-content:space-between;margin-top:8px;color:var(--ink3)}
 #assignmentDialog .actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
 #assignmentDialog .primary,#assignmentDialog .secondary{border:0;border-radius:8px;font-weight:600;padding:11px 17px}
-#assignmentDialog .primary{color:#fff;background:var(--blue);box-shadow:0 8px 18px rgba(30,79,216,.18)}
-#assignmentDialog .primary:hover{background:#163fb4}
+#assignmentDialog .primary{color:#fff;background:var(--red);box-shadow:0 8px 18px rgba(185,28,28,.20)}
+#assignmentDialog .primary:hover{background:#991B1B}
 #assignmentDialog .primary:disabled{opacity:.55;cursor:not-allowed}
 #assignmentDialog .secondary{color:var(--ink);background:var(--grid)}
 #assignmentDialog .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
@@ -638,11 +638,11 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 #assignmentDialog .review-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;text-align:left}
 #assignmentDialog .review-heading h2,#assignmentDialog .success-panel h2{margin:0 0 3px}
 #assignmentDialog .review-heading p{margin:0;color:var(--ink3)}
-#assignmentDialog .ai-badge{padding:5px 10px;border-radius:99px;background:var(--blue-soft);color:var(--blue);
+#assignmentDialog .ai-badge{padding:5px 10px;border-radius:99px;background:var(--red-soft);color:var(--red);
   font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600}
 #assignmentDialog .confirm-check{display:flex!important;grid-template-columns:18px 1fr!important;align-items:start;
   margin-top:20px;color:var(--ink2);font-weight:500!important}
-#assignmentDialog .confirm-check input{width:17px;height:17px;margin:2px 0 0}
+#assignmentDialog .confirm-check input{width:17px;height:17px;margin:2px 0 0;accent-color:var(--red)}
 #assignmentDialog .notice{margin:20px 30px 0;padding:11px 13px;border-radius:8px;background:var(--amber-soft);color:var(--amber)}
 #assignmentDialog .notice.error{background:var(--red-soft);color:var(--red)}
 #assignmentDialog .success-panel{text-align:center;padding-block:42px}

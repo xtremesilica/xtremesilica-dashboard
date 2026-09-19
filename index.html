@@ -594,10 +594,10 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 /* Embedded Assignment UI */
 #openAssignment.assignment-nav{
   font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;
-  padding:8px 14px;border-radius:6px;border:1px solid var(--blue);color:#fff;background:var(--blue);
-  cursor:pointer;font-weight:600;line-height:1.5
+  padding:8px 14px;border-radius:6px;border:1px solid var(--line);color:var(--ink2);background:#fff;
+  cursor:pointer;font-weight:500;line-height:1.5
 }
-#openAssignment.assignment-nav:hover{background:#163fb4;border-color:#163fb4}
+#openAssignment.assignment-nav:hover{background:var(--grid);color:var(--ink);border-color:var(--line);}
 #assignmentDialog{width:min(760px,calc(100% - 28px));max-height:92vh;padding:0;border:0;border-radius:14px;
   box-shadow:0 22px 70px rgba(14,23,38,.26);overflow:auto;color:var(--ink);background:#fff}
 #assignmentDialog::backdrop{background:rgba(14,23,38,.62);backdrop-filter:blur(3px)}
@@ -608,7 +608,7 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 #assignmentDialog .dialog-header{display:flex;justify-content:space-between;gap:24px;padding:26px 30px 20px;
   background:linear-gradient(135deg,var(--ink),#263652);color:#fff}
 #assignmentDialog .dialog-header h1{margin:2px 0 3px;font-family:'Space Grotesk',sans-serif;font-size:25px;color:#fff}
-#assignmentDialog .eyebrow{margin:0;color:#9fb5ef;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.16em}
+#assignmentDialog .eyebrow{margin:0;color:#F87171;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.16em}
 #assignmentDialog .subtitle{margin:0;color:#c5cede;font-size:13px}
 #assignmentDialog .icon-button{align-self:flex-start;border:0;border-radius:8px;padding:0;width:36px;height:36px;
   background:rgba(255,255,255,.1);color:#fff;font-size:25px}

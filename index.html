@@ -591,6 +591,75 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 @media (max-width:900px){.mstone{grid-template-columns:1fr}}
 
 
+/* Task Progress dashboard */
+#openTaskProgress.task-progress-nav{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;
+  padding:8px 14px;border-radius:6px;border:1px solid var(--line);color:var(--ink2);background:#fff;
+  cursor:pointer;font-weight:500;line-height:1.5
+}
+#openTaskProgress.task-progress-nav:hover{background:var(--grid);color:var(--ink);border-color:var(--line)}
+#taskProgressDialog{width:min(1180px,calc(100% - 28px));max-height:92vh;padding:0;border:0;border-radius:14px;
+  box-shadow:0 22px 70px rgba(14,23,38,.28);overflow:auto;color:var(--ink);background:#fff}
+#taskProgressDialog::backdrop{background:rgba(14,23,38,.62);backdrop-filter:blur(3px)}
+#taskProgressDialog *{box-sizing:border-box}
+#taskProgressDialog button,#taskProgressDialog select{font:inherit}
+#taskProgressDialog .progress-shell{background:#fff;min-height:620px}
+#taskProgressDialog .progress-header{display:flex;justify-content:space-between;gap:24px;padding:24px 30px 20px;
+  background:linear-gradient(135deg,#7F1D1D,var(--red));color:#fff}
+#taskProgressDialog .progress-header h1{margin:2px 0 3px;font-size:25px;color:#fff}
+#taskProgressDialog .progress-eyebrow{margin:0;color:#FCA5A5;font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;font-weight:600;letter-spacing:.16em}
+#taskProgressDialog .progress-subtitle{margin:0;color:#FEE2E2}
+#taskProgressDialog .progress-close{width:38px;height:38px;border:0;border-radius:9px;background:rgba(255,255,255,.14);
+  color:#fff;font-size:25px;line-height:1;cursor:pointer}
+#taskProgressDialog .progress-close:hover{background:rgba(255,255,255,.24)}
+#taskProgressDialog .progress-body{padding:22px 30px 30px}
+#taskProgressDialog .progress-toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+#taskProgressDialog .progress-filter{display:grid;gap:5px;min-width:190px}
+#taskProgressDialog .progress-filter span{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--ink3);
+  text-transform:uppercase;letter-spacing:.08em}
+#taskProgressDialog select{height:40px;border:1px solid var(--line2);border-radius:7px;background:#fff;color:var(--ink);
+  padding:0 34px 0 11px}
+#taskProgressDialog .progress-refresh{height:40px;border:0;border-radius:7px;background:var(--red);color:#fff;
+  padding:0 16px;cursor:pointer;font-weight:700}
+#taskProgressDialog .progress-refresh:hover{background:#991B1B}
+#taskProgressDialog .progress-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+#taskProgressDialog .progress-stat{border:1px solid #F1C3C3;border-radius:10px;background:#FFF7F7;padding:14px 16px}
+#taskProgressDialog .progress-stat span{display:block;color:var(--ink3);font-size:10px;font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;letter-spacing:.08em}
+#taskProgressDialog .progress-stat strong{display:block;margin-top:4px;font-size:23px;color:#7F1D1D}
+#taskProgressDialog .progress-layout{display:grid;grid-template-columns:minmax(280px,.75fr) minmax(0,1.55fr);gap:18px}
+#taskProgressDialog .progress-panel{border:1px solid var(--line);border-radius:11px;padding:17px;background:#fff;min-width:0}
+#taskProgressDialog .progress-panel h2{font-size:16px;margin-bottom:12px}
+#taskProgressDialog .progress-chart-wrap{height:320px;position:relative}
+#taskProgressDialog .progress-table-wrap{overflow:auto;max-height:390px}
+#taskProgressDialog .progress-table{width:100%;border-collapse:collapse;font-size:12px}
+#taskProgressDialog .progress-table th{position:sticky;top:0;z-index:1;background:#FFF1F2;color:#7F1D1D;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;text-align:left;
+  padding:10px;border-bottom:1px solid #F1C3C3;white-space:nowrap}
+#taskProgressDialog .progress-table td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+#taskProgressDialog .task-name{font-weight:700;min-width:190px}
+#taskProgressDialog .muted-line{display:block;color:var(--ink3);font-size:10.5px;margin-top:2px}
+#taskProgressDialog .rate{font-family:'IBM Plex Mono',monospace;font-weight:700;color:#7F1D1D;white-space:nowrap}
+#taskProgressDialog .mini-track{width:110px;height:7px;background:#FEE2E2;border-radius:99px;overflow:hidden;margin-top:5px}
+#taskProgressDialog .mini-fill{height:100%;background:linear-gradient(90deg,#EF4444,#991B1B);border-radius:99px}
+#taskProgressDialog .status-pill{display:inline-block;border-radius:99px;padding:3px 8px;font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;font-weight:700;text-transform:uppercase;white-space:nowrap;background:var(--grid);color:var(--ink2)}
+#taskProgressDialog .status-pill.blocked{background:#FEE2E2;color:#B91C1C}
+#taskProgressDialog .status-pill.completed{background:var(--green-soft);color:var(--green)}
+#taskProgressDialog .status-pill.in-progress{background:var(--amber-soft);color:var(--amber)}
+#taskProgressDialog .blocker-cell{min-width:190px;color:#991B1B}
+#taskProgressDialog .progress-empty{padding:40px 16px;text-align:center;color:var(--ink3)}
+#taskProgressDialog .progress-error{margin-bottom:14px;padding:10px 12px;border:1px solid #FCA5A5;border-radius:7px;
+  background:#FEF2F2;color:#991B1B}
+@media(max-width:800px){
+  #taskProgressDialog .progress-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #taskProgressDialog .progress-layout{grid-template-columns:1fr}
+  #taskProgressDialog .progress-body{padding:18px}
+  #taskProgressDialog .progress-header{padding:22px 18px}
+}
+
+
 /* Embedded Assignment UI */
 #openAssignment.assignment-nav{
   font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;
@@ -683,6 +752,7 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
       <a href="#marketing" class="pg-link" data-page="marketing">Marketing</a>
       <a href="#risks" class="pg-link" data-page="risks">Risks</a>
       <button id="openAssignment" class="assignment-nav" type="button">Assign Project</button>
+      <button id="openTaskProgress" class="task-progress-nav" type="button">Task Progress</button>
     </div>
   </div>
 </div>
@@ -1915,6 +1985,67 @@ if (tblRisks){
 })();
 </script>
 
+<!-- Task Progress dashboard -->
+<dialog id="taskProgressDialog" aria-labelledby="taskProgressTitle">
+  <div class="progress-shell">
+    <header class="progress-header">
+      <div>
+        <p class="progress-eyebrow">PROJECT CONTROL</p>
+        <h1 id="taskProgressTitle">Assigned Task Progress</h1>
+        <p class="progress-subtitle">Live completion rates, ownership, status and reported blockers.</p>
+      </div>
+      <button id="closeTaskProgress" class="progress-close" type="button" aria-label="Close">×</button>
+    </header>
+
+    <div class="progress-body">
+      <div id="taskProgressError" class="progress-error" role="alert" hidden></div>
+
+      <div class="progress-toolbar">
+        <label class="progress-filter">
+          <span>Employee</span>
+          <select id="taskProgressEmployee"><option value="">All employees</option></select>
+        </label>
+        <label class="progress-filter">
+          <span>Status</span>
+          <select id="taskProgressStatus">
+            <option value="">All statuses</option>
+            <option value="Assigned">Assigned</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Blocked">Blocked</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </label>
+        <button id="refreshTaskProgress" class="progress-refresh" type="button">Refresh progress</button>
+      </div>
+
+      <div class="progress-summary">
+        <div class="progress-stat"><span>Assigned tasks</span><strong id="progressTaskCount">0</strong></div>
+        <div class="progress-stat"><span>Average progress</span><strong id="progressAverage">0%</strong></div>
+        <div class="progress-stat"><span>Completed</span><strong id="progressCompleted">0</strong></div>
+        <div class="progress-stat"><span>Blocked</span><strong id="progressBlocked">0</strong></div>
+      </div>
+
+      <div class="progress-layout">
+        <section class="progress-panel">
+          <h2>Task progression rate</h2>
+          <div class="progress-chart-wrap"><canvas id="taskProgressChart"></canvas></div>
+        </section>
+        <section class="progress-panel">
+          <h2>Assigned tasks and blockers</h2>
+          <div class="progress-table-wrap">
+            <table class="progress-table">
+              <thead><tr><th>Task</th><th>Employee / Manager</th><th>Progress</th><th>Status</th><th>Blocker name</th></tr></thead>
+              <tbody id="taskProgressRows"></tbody>
+            </table>
+            <div id="taskProgressEmpty" class="progress-empty" hidden>No assigned tasks were returned.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+
 <!-- Assignment UI integrated from Employee-project-Assigned-UI -->
 <dialog id="assignmentDialog" aria-labelledby="dialogTitle">
     <div class="dialog-shell">
@@ -2471,6 +2602,161 @@ if (tblRisks){
 
   // Refresh dashboard data without creating another assignment.
   window.refreshXtremeProjects = refreshDashboardProjects;
+})();
+
+
+// Task Progress dashboard. Uses the same read-only projects endpoint as the assignment refresh.
+(() => {
+  const progressConfig = {
+    apiBaseUrl: 'https://automation.sionsemi.com',
+    projectsPath: '/webhook/dashboard/projects',
+    requestTimeoutMs: 60000
+  };
+  const progressDialog = document.getElementById('taskProgressDialog');
+  const openButton = document.getElementById('openTaskProgress');
+  const closeButton = document.getElementById('closeTaskProgress');
+  const refreshButton = document.getElementById('refreshTaskProgress');
+  const employeeFilter = document.getElementById('taskProgressEmployee');
+  const statusFilter = document.getElementById('taskProgressStatus');
+  const rowsElement = document.getElementById('taskProgressRows');
+  const emptyElement = document.getElementById('taskProgressEmpty');
+  const errorElement = document.getElementById('taskProgressError');
+  let tasks = [];
+  let progressChart = null;
+
+  const value = (object, keys, fallback = '') => {
+    for (const key of keys) {
+      if (object && object[key] !== undefined && object[key] !== null) return object[key];
+    }
+    return fallback;
+  };
+
+  const escapeHtml = (input) => String(input ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+
+  function normaliseTasks(payload) {
+    const root = Array.isArray(payload) ? payload : (payload.projects || payload.tasks || payload.data || []);
+    const output = [];
+    root.forEach((item) => {
+      const nested = value(item, ['tasks', 'project_tasks', 'assigned_tasks'], null);
+      const list = Array.isArray(nested) ? nested : [item];
+      list.forEach((task) => {
+        const combined = { ...item, ...task };
+        const progress = Math.max(0, Math.min(100, Number(value(combined,
+          ['progress_percentage', 'Progress_Percentage', 'progress', 'completion_percentage'], 0)) || 0));
+        const blockedValue = value(combined, ['blocked', 'Blocked'], 0);
+        const status = String(value(combined, ['task_status', 'status', 'Status'], progress >= 100 ? 'Completed' : 'Assigned'));
+        const blocked = blockedValue === true || Number(blockedValue) === 1 || status.toLowerCase() === 'blocked';
+        output.push({
+          taskId: value(combined, ['task_id', 'Task_ID', 'id']),
+          taskTitle: value(combined, ['task_title', 'Task_Title', 'title'], 'Untitled task'),
+          projectName: value(combined, ['project_name', 'Project_Name'], ''),
+          employeeId: String(value(combined, ['employee_id', 'Employee_ID'], '')),
+          employeeName: value(combined, ['employee_name', 'Employee_Name', 'name'], 'Unknown employee'),
+          managerName: value(combined, ['manager_name', 'Manager_Name'], '—'),
+          progress,
+          status: blocked ? 'Blocked' : (progress >= 100 ? 'Completed' : status),
+          blocked,
+          blockerName: value(combined, ['blocker_type', 'blocker_name', 'Blocker_Name'], ''),
+          blockerDescription: value(combined, ['blocker_description', 'Blocker_Description', 'existing_blocker'], '')
+        });
+      });
+    });
+    return output.filter((task) => task.taskId !== undefined && task.taskId !== null && task.taskId !== '');
+  }
+
+  function statusClass(status) {
+    return String(status).toLowerCase().replace(/\s+/g, '-');
+  }
+
+  function populateEmployees() {
+    const previous = employeeFilter.value;
+    const people = [...new Map(tasks.map((task) => [task.employeeId, task.employeeName])).entries()]
+      .sort((a, b) => String(a[1]).localeCompare(String(b[1])));
+    employeeFilter.innerHTML = '<option value="">All employees</option>' + people
+      .map(([id, name]) => `<option value="${escapeHtml(id)}">${escapeHtml(name)}</option>`).join('');
+    if (people.some(([id]) => id === previous)) employeeFilter.value = previous;
+  }
+
+  function render() {
+    const employeeId = employeeFilter.value;
+    const selectedStatus = statusFilter.value.toLowerCase();
+    const filtered = tasks.filter((task) =>
+      (!employeeId || task.employeeId === employeeId) &&
+      (!selectedStatus || task.status.toLowerCase() === selectedStatus)
+    );
+    const average = filtered.length
+      ? Math.round(filtered.reduce((sum, task) => sum + task.progress, 0) / filtered.length) : 0;
+    document.getElementById('progressTaskCount').textContent = String(filtered.length);
+    document.getElementById('progressAverage').textContent = `${average}%`;
+    document.getElementById('progressCompleted').textContent = String(filtered.filter((task) => task.progress >= 100).length);
+    document.getElementById('progressBlocked').textContent = String(filtered.filter((task) => task.blocked).length);
+
+    rowsElement.innerHTML = filtered.map((task) => {
+      const blocker = task.blockerName || task.blockerDescription || (task.blocked ? 'Blocker reported' : '—');
+      return `<tr>
+        <td class="task-name">${escapeHtml(task.taskTitle)}<span class="muted-line">${escapeHtml(task.projectName)}</span></td>
+        <td>${escapeHtml(task.employeeName)}<span class="muted-line">Manager: ${escapeHtml(task.managerName)}</span></td>
+        <td><span class="rate">${task.progress}%</span><div class="mini-track"><div class="mini-fill" style="width:${task.progress}%"></div></div></td>
+        <td><span class="status-pill ${statusClass(task.status)}">${escapeHtml(task.status)}</span></td>
+        <td class="blocker-cell">${escapeHtml(blocker)}${task.blockerName && task.blockerDescription ? `<span class="muted-line">${escapeHtml(task.blockerDescription)}</span>` : ''}</td>
+      </tr>`;
+    }).join('');
+    emptyElement.hidden = filtered.length > 0;
+
+    const labels = filtered.map((task) => task.taskTitle.length > 24 ? task.taskTitle.slice(0, 24) + '…' : task.taskTitle);
+    const values = filtered.map((task) => task.progress);
+    const colours = filtered.map((task) => task.blocked ? '#DC2626' : task.progress >= 100 ? '#0E7A4F' : '#B91C1C');
+    if (progressChart) progressChart.destroy();
+    progressChart = new Chart(document.getElementById('taskProgressChart'), {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Completion %', data: values, backgroundColor: colours, borderRadius: 5 }] },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        scales: { x: { beginAtZero: true, max: 100, ticks: { callback: (number) => number + '%' } } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (context) => ` ${context.raw}% complete` } } }
+      }
+    });
+  }
+
+  async function loadProgress() {
+    refreshButton.disabled = true;
+    refreshButton.textContent = 'Loading…';
+    errorElement.hidden = true;
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), progressConfig.requestTimeoutMs);
+      const response = await fetch(progressConfig.apiBaseUrl.replace(/\/$/, '') + progressConfig.projectsPath, {
+        method: 'GET', headers: { Accept: 'application/json' }, signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!response.ok) throw new Error(`Unable to load task progress (${response.status}).`);
+      tasks = normaliseTasks(await response.json());
+      populateEmployees();
+      render();
+    } catch (error) {
+      errorElement.textContent = error.name === 'AbortError'
+        ? 'Task progress request timed out. Please try again.' : error.message;
+      errorElement.hidden = false;
+      tasks = [];
+      populateEmployees();
+      render();
+    } finally {
+      refreshButton.disabled = false;
+      refreshButton.textContent = 'Refresh progress';
+    }
+  }
+
+  openButton.addEventListener('click', () => { progressDialog.showModal(); loadProgress(); });
+  closeButton.addEventListener('click', () => progressDialog.close());
+  progressDialog.addEventListener('cancel', () => { if (progressChart) progressChart.resize(); });
+  refreshButton.addEventListener('click', loadProgress);
+  employeeFilter.addEventListener('change', render);
+  statusFilter.addEventListener('change', render);
+  window.addEventListener('dashboard:projects-refreshed', (event) => {
+    tasks = normaliseTasks(event.detail.projects || []); populateEmployees(); render();
+  });
 })();
 
 </script>

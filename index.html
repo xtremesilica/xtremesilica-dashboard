@@ -591,6 +591,13 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
 @media (max-width:900px){.mstone{grid-template-columns:1fr}}
 
 
+
+/* Task Progress as a standard dashboard page */
+#page-task-progress #taskProgressDialog{width:auto;max-height:none;padding:0;border:0;border-radius:12px;box-shadow:none;overflow:visible;background:transparent}
+#page-task-progress #taskProgressDialog .progress-shell{border:1px solid var(--line);border-radius:12px;overflow:hidden;min-height:620px}
+#page-task-progress #taskProgressDialog .progress-header{position:relative}
+#page-task-progress #taskProgressDialog::backdrop{display:none}
+
 /* Task Progress dashboard */
 #openTaskProgress.task-progress-nav{
   font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;
@@ -752,7 +759,7 @@ tfoot td{font-weight:600; background:var(--grid); border-top:1px solid var(--lin
       <a href="#marketing" class="pg-link" data-page="marketing">Marketing</a>
       <a href="#risks" class="pg-link" data-page="risks">Risks</a>
       <button id="openAssignment" class="assignment-nav" type="button">Assign Project</button>
-      <button id="openTaskProgress" class="task-progress-nav" type="button">Task Progress</button>
+      <a href="#task-progress" class="pg-link" data-page="task-progress">Task Progress</a>
     </div>
   </div>
 </div>
@@ -1477,12 +1484,13 @@ const commonScales = () => ({
 const commonLegend = () => ({ labels:{ color:C.ink2, font:{family:"'IBM Plex Mono',monospace", size:11}, boxWidth:10, boxHeight:10, padding:14 } });
 
 // ================== ROUTER ==================
-const pages = ["home","gantt","marketing","risks"];
+const pages = ["home","gantt","marketing","risks","task-progress"];
 const SUBS = {
   home:"Executive Dashboard · FY27 → FY30",
   gantt:"Development & Go-to-Market Gantt · 42-month timeline",
   marketing:"Marketing & Lead-Generation Plan",
-  risks:"Risks & Mitigation Plan"
+  risks:"Risks & Mitigation Plan",
+  "task-progress":"Assigned Task Progress & Blocker Tracking"
 };
 function showPage(id){
   if (!pages.includes(id)) id = "home";
@@ -1986,7 +1994,9 @@ if (tblRisks){
 </script>
 
 <!-- Task Progress dashboard -->
-<dialog id="taskProgressDialog" aria-labelledby="taskProgressTitle">
+<div class="page" id="page-task-progress">
+<div class="wrap">
+<section id="taskProgressDialog" aria-labelledby="taskProgressTitle">
   <div class="progress-shell">
     <header class="progress-header">
       <div>
@@ -1994,7 +2004,6 @@ if (tblRisks){
         <h1 id="taskProgressTitle">Assigned Task Progress</h1>
         <p class="progress-subtitle">Live completion rates, ownership, status and reported blockers.</p>
       </div>
-      <button id="closeTaskProgress" class="progress-close" type="button" aria-label="Close">×</button>
     </header>
 
     <div class="progress-body">
@@ -2043,7 +2052,9 @@ if (tblRisks){
       </div>
     </div>
   </div>
-</dialog>
+</section>
+</div>
+</div>
 
 
 <!-- Assignment UI integrated from Employee-project-Assigned-UI -->
@@ -2613,8 +2624,6 @@ if (tblRisks){
     requestTimeoutMs: 60000
   };
   const progressDialog = document.getElementById('taskProgressDialog');
-  const openButton = document.getElementById('openTaskProgress');
-  const closeButton = document.getElementById('closeTaskProgress');
   const refreshButton = document.getElementById('refreshTaskProgress');
   const employeeFilter = document.getElementById('taskProgressEmployee');
   const statusFilter = document.getElementById('taskProgressStatus');
@@ -2748,9 +2757,11 @@ if (tblRisks){
     }
   }
 
-  openButton.addEventListener('click', () => { progressDialog.showModal(); loadProgress(); });
-  closeButton.addEventListener('click', () => progressDialog.close());
-  progressDialog.addEventListener('cancel', () => { if (progressChart) progressChart.resize(); });
+  const loadWhenActive = () => {
+    if (location.hash === '#task-progress') loadProgress();
+  };
+  window.addEventListener('hashchange', loadWhenActive);
+  loadWhenActive();
   refreshButton.addEventListener('click', loadProgress);
   employeeFilter.addEventListener('change', render);
   statusFilter.addEventListener('change', render);

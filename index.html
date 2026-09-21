@@ -2758,7 +2758,10 @@ if (tblRisks){
   }
 
   const loadWhenActive = () => {
-    if (location.hash === '#task-progress') loadProgress();
+    if (location.hash === '#task-progress') {
+      if (typeof showPage === 'function') showPage('task-progress');
+      loadProgress();
+    }
   };
   window.addEventListener('hashchange', loadWhenActive);
   loadWhenActive();
